@@ -1,0 +1,88 @@
+name: Deploy Student Frontend
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main", "master"]
+    paths:
+      - "apps/student-web/**"
+      - "content/**"
+      - "qc_lab_simulator/**"
+      - "scripts/export_web_data.py"
+      - "scripts/sync_student_web_assets.py"
+      - ".github/workflows/student-pages.yml"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "student-pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Export web dataset
+        run: python scripts/export_web_data.py --catalog content/experiment_catalog.json --output-dir outputs/web_data
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: apps/student-web/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: apps/student-web
+
+      - name: Sync dataset into frontend public assets
+        run: npm run sync:data
+        working-directory: apps/student-web
+
+      - name: Resolve Vite base path
+        id: base
+        shell: pwsh
+        run: |
+          $repo = "${{ github.event.repository.name }}"
+          if ($repo.ToLower().EndsWith(".github.io")) {
+            "value=/" >> $env:GITHUB_OUTPUT
+          } else {
+            "value=/$repo/" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Build frontend
+        env:
+          VITE_BASE_PATH: ${{ steps.base.outputs.value }}
+        run: npm run build
+        working-directory: apps/student-web
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/student-web/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
