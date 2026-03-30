@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { ExperimentListItem } from "@/entities/experiment/model/experiment";
+import { translateExperimentTitle } from "@/shared/config/localization";
 
 export function ExperimentList({
   experiments,
@@ -13,7 +14,7 @@ export function ExperimentList({
         {experiments.map((experiment) => (
           <article className="info-card" key={experiment.id}>
             <header>
-              <h3>{experiment.title}</h3>
+              <h3>{translateExperimentTitle(experiment.title)}</h3>
               <p>{experiment.description || "Sin descripcion."}</p>
             </header>
             <div className="card-meta">

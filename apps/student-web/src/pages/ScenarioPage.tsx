@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { getTriggerRuns } from "@/entities/rule-result/model/ruleResult";
 import { ScenarioViewer } from "@/features/scenario-viewer/ui/ScenarioViewer";
 import { getEducationalContent } from "@/shared/api/educationalAdapter";
+import { translateExperimentTitle, translateScenarioType } from "@/shared/config/localization";
 import { getExperimentManifest, getScenarioPayload, listExperiments } from "@/shared/api/studentDataApi";
 import { useAsyncResource } from "@/shared/lib/useAsyncResource";
 import { EmptyState, ErrorState, LoadingState, NotFoundState } from "@/shared/ui/AsyncStates";
@@ -62,8 +63,10 @@ export function ScenarioPage(): JSX.Element {
     <section>
       <p className="breadcrumb">
         <Link to="/">Inicio</Link> /{" "}
-        <Link to={`/experiments/${encodeURIComponent(experimentId)}`}>{data.experimentTitle}</Link> /{" "}
-        {data.scenario.scenario_name}
+        <Link to={`/experiments/${encodeURIComponent(experimentId)}`}>
+          {translateExperimentTitle(data.experimentTitle)}
+        </Link>{" "}
+        / {translateScenarioType(data.scenario.scenario_type)}
       </p>
       <ScenarioViewer
         educational={data.educational}

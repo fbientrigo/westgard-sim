@@ -20,6 +20,7 @@ env/
 
 # Pytest cache
 .pytest_cache/
+.pytest_local_tmp/
 
 # Outputs (generated at runtime)
 outputs/
@@ -33,6 +34,9 @@ apps/student-web/public/educational/
 .vscode/
 .idea/
 *.swp
+
+# Local agent/runtime scratch
+.sisyphus/
 
 # OS
 .DS_Store

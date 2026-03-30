@@ -6,7 +6,7 @@ export function AppLayout(): JSX.Element {
       <header className="app-header">
         <div className="app-header-inner">
           <Link className="brand-link" to="/">
-            Westgard Student Lab
+            Laboratorio Westgard para Estudiantes
           </Link>
           <p className="brand-subtitle">
             Simulacion de control interno para entrenamiento en reglas de Westgard.

@@ -1,5 +1,10 @@
 import { getRuleResultEntries } from "@/entities/rule-result/model/ruleResult";
 import { LeveyJenningsChart } from "@/features/chart-viewer/ui/LeveyJenningsChart";
+import {
+  translateAnalyte,
+  translateScenarioDescription,
+  translateScenarioType,
+} from "@/shared/config/localization";
 import { formatDecimal } from "@/shared/lib/format";
 import { StatGrid } from "@/shared/ui/StatGrid";
 import type { EducationalContent } from "@/shared/types/educational";
@@ -20,13 +25,13 @@ export function ScenarioViewer({
     <div className="scenario-layout">
       <section className="content-section">
         <header className="section-header">
-          <h2>{scenario.scenario_name}</h2>
-          <p>{scenario.description}</p>
+          <h2>{translateScenarioType(scenario.scenario_type)}</h2>
+          <p>{translateScenarioDescription(scenario.description)}</p>
         </header>
 
         <StatGrid
           items={[
-            { label: "Analito", value: scenario.summary.analyte },
+            { label: "Analito", value: translateAnalyte(scenario.summary.analyte) },
             { label: "Corridas", value: scenario.summary.n_runs },
             {
               label: "Reglas activadas",
@@ -49,6 +54,7 @@ export function ScenarioViewer({
       <LeveyJenningsChart
         limits={scenario.control_limits}
         points={scenario.series}
+        ruleResults={scenario.rule_results}
         triggerRuns={triggerRuns}
       />
 
@@ -76,7 +82,7 @@ export function ScenarioViewer({
               <tr>
                 <th>Regla</th>
                 <th>Activada</th>
-                <th>Primer trigger</th>
+                <th>Primera activación</th>
                 <th>Falsa alarma</th>
               </tr>
             </thead>
@@ -84,9 +90,9 @@ export function ScenarioViewer({
               {ruleEntries.map(([ruleName, result]) => (
                 <tr key={ruleName}>
                   <td>{ruleName}</td>
-                  <td>{result.triggered ? "Si" : "No"}</td>
+                  <td>{result.triggered ? "Sí" : "No"}</td>
                   <td>{result.first_trigger_run ?? "-"}</td>
-                  <td>{result.false_alarm ? "Si" : "No"}</td>
+                  <td>{result.false_alarm ? "Sí" : "No"}</td>
                 </tr>
               ))}
             </tbody>

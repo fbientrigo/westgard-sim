@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { ExperimentOverview } from "@/features/experiment-detail/ui/ExperimentOverview";
+import { translateExperimentTitle } from "@/shared/config/localization";
 import { getExperimentManifest, listExperiments } from "@/shared/api/studentDataApi";
 import { useAsyncResource } from "@/shared/lib/useAsyncResource";
 import { EmptyState, ErrorState, LoadingState, NotFoundState } from "@/shared/ui/AsyncStates";
@@ -43,7 +44,7 @@ export function ExperimentPage(): JSX.Element {
   return (
     <section>
       <p className="breadcrumb">
-        <Link to="/">Inicio</Link> / {data.title}
+        <Link to="/">Inicio</Link> / {translateExperimentTitle(data.title)}
       </p>
       <ExperimentOverview experiment={data} />
     </section>
