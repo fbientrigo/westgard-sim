@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://westgard.local/schemas/authoring-catalog.schema.json",
+  "title": "Authoring Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "experiments"
+  ],
+  "properties": {
+    "experiments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/experiment"
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "education": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "learning_objective",
+        "questions",
+        "explanation"
+      ],
+      "properties": {
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "learning_objective": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "explanation": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "shift_sd": {
+          "type": "number",
+          "minimum": -10.0,
+          "maximum": 10.0
+        },
+        "start_run": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "drift_per_run": {
+          "type": "number",
+          "minimum": -2.0,
+          "maximum": 2.0
+        },
+        "sd_multiplier": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 10.0
+        }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "parameters",
+        "education"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "random_error",
+            "systematic_error",
+            "trend"
+          ]
+        },
+        "parameters": {
+          "$ref": "#/$defs/parameters"
+        },
+        "education": {
+          "$ref": "#/$defs/education"
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mean",
+        "sd",
+        "n_runs",
+        "seed"
+      ],
+      "properties": {
+        "mean": {
+          "type": "number",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "sd": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 10000.0
+        },
+        "n_runs": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 500
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        }
+      }
+    },
+    "experiment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "description",
+        "analyte",
+        "config",
+        "scenarios"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "analyte": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "config": {
+          "$ref": "#/$defs/config"
+        },
+        "scenarios": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/scenario"
+          }
+        }
+      }
+    }
+  }
+}

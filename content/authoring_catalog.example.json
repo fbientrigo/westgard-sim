@@ -1,0 +1,71 @@
+{
+  "experiments": [
+    {
+      "id": "glucose_intro_course",
+      "title": "Glucose Intro Course",
+      "description": "Set inicial para practicar identificacion de errores de control de calidad.",
+      "analyte": "Glucose",
+      "config": {
+        "mean": 100.0,
+        "sd": 2.0,
+        "n_runs": 30,
+        "seed": 42
+      },
+      "scenarios": [
+        {
+          "id": "syst_bias_early",
+          "type": "systematic_error",
+          "parameters": {
+            "start_run": 10,
+            "shift_sd": 3.0
+          },
+          "education": {
+            "description": "Se observa un desplazamiento del promedio despues del run 10.",
+            "learning_objective": "Detectar sesgo sistematico con reglas de Westgard.",
+            "questions": [
+              "En que run aparece la primera alerta consistente?",
+              "Que regla detecta antes el cambio de sesgo?"
+            ],
+            "explanation": "Un desplazamiento sostenido del promedio produce violaciones repetidas en el mismo lado de la media."
+          }
+        },
+        {
+          "id": "trend_progressive",
+          "type": "trend",
+          "parameters": {
+            "start_run": 8,
+            "shift_sd": 3.0,
+            "drift_per_run": 0.25
+          },
+          "education": {
+            "description": "Los valores suben gradualmente en lugar de cambiar de golpe.",
+            "learning_objective": "Distinguir tendencia progresiva versus sesgo abrupto.",
+            "questions": [
+              "Que diferencia visual hay entre tendencia y sesgo?",
+              "Desde que run la tendencia se vuelve clinicamente relevante?"
+            ],
+            "explanation": "En una tendencia, la pendiente acumulada suele gatillar reglas mas tarde que en un sesgo brusco."
+          }
+        },
+        {
+          "id": "rand_precision_loss",
+          "type": "random_error",
+          "parameters": {
+            "start_run": 12,
+            "shift_sd": 3.0,
+            "sd_multiplier": 2.8
+          },
+          "education": {
+            "description": "Aumenta la dispersion de los puntos sin mover la media de forma estable.",
+            "learning_objective": "Reconocer perdida de precision e identificar su impacto en falsas alarmas.",
+            "questions": [
+              "Que regla se vuelve mas sensible cuando crece la dispersion?",
+              "La media cambia o solo cambia la variabilidad?"
+            ],
+            "explanation": "La imprecision incrementa la probabilidad de puntos extremos aun con media estable."
+          }
+        }
+      ]
+    }
+  ]
+}

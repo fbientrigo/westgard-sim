@@ -1,0 +1,30 @@
+{
+  "normal": {
+    "display_name": "Normal Operation",
+    "short_description": "Baseline scenario with no quality control failures",
+    "educational_message": "When the QC process is working correctly, measurements follow a predictable normal distribution around the target mean. Values stay within the control limits, and Westgard rules should not trigger. This is what you hope to see in daily laboratory operations.",
+    "pattern_hint": "Look for random scatter around the mean with most values within ±2SD. No systematic trends or shifts should be visible.",
+    "common_mistake": "Students sometimes expect perfectly symmetric patterns or no values beyond ±2SD. Remember: in a normal distribution, about 5% of values naturally fall beyond ±2SD even when everything is working correctly."
+  },
+  "bias": {
+    "display_name": "Bias Shift",
+    "short_description": "Sudden mean shift starting at run 11",
+    "educational_message": "A bias shift represents a sudden, sustained change in the mean value of the measurement process. This could be caused by a calibration error, reagent lot change, or instrument recalibration. Unlike drift, bias appears suddenly and remains constant.",
+    "pattern_hint": "The first 10 runs cluster around the original mean. Starting at run 11, all measurements shift upward by approximately 3 standard deviations. The shift is immediate and sustained.",
+    "common_mistake": "Students often confuse bias with drift. Key difference: bias is a sudden jump to a new stable level, while drift is a gradual progressive change. Bias typically triggers the 1-3s and 2-2s Westgard rules."
+  },
+  "drift": {
+    "display_name": "Progressive Drift",
+    "short_description": "Gradual linear drift from run 11 to the final run",
+    "educational_message": "Drift represents a progressive, continuous change in the mean over time. This pattern can result from deteriorating reagents, gradual instrument degradation, or environmental changes (like temperature drift). Unlike bias, the change is gradual and continuous.",
+    "pattern_hint": "Early runs appear normal, but starting at run 11, values progressively increase in a linear fashion. The total drift reaches about 4 standard deviations by the final run. Each successive measurement tends to be higher than the previous one.",
+    "common_mistake": "Students may not recognize drift until it becomes severe. In practice, subtle drift is one of the hardest patterns to detect visually. The 10x rule (10 consecutive measurements on one side of the mean) is specifically designed to catch drift early."
+  },
+  "imprecision": {
+    "display_name": "Imprecision Increase",
+    "short_description": "Increased random scatter from run 11 onward",
+    "educational_message": "Increased imprecision (also called increased variability or loss of precision) means measurements become more scattered while the mean stays the same. This could result from inconsistent sample preparation, mixing problems, or instrument instability. The process is still centered correctly but less reliable.",
+    "pattern_hint": "The first 10 runs show normal tight clustering around the mean. Starting at run 11, measurements still center around the same mean value but with much wider scatter—about 3 times the original standard deviation.",
+    "common_mistake": "Students sometimes think increased scatter always means the process is 'out of control.' While imprecision does indicate a problem requiring investigation, it's different from bias or drift. The mean hasn't changed; only the reliability has decreased. This typically triggers the R-4s rule (4 consecutive values >1SD on the same side)."
+  }
+}

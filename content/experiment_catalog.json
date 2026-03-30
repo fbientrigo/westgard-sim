@@ -1,0 +1,88 @@
+{
+  "experiments": [
+    {
+      "id": "baseline_glucose",
+      "title": "Baseline Glucose Class",
+      "description": "Starter set with default control process behavior.",
+      "config": {
+        "mean": 100.0,
+        "sd": 2.0,
+        "n_runs": 30,
+        "seed": 42,
+        "analyte": "Glucose"
+      },
+      "scenarios": [
+        {
+          "id": "normal_default",
+          "scenario_key": "normal"
+        },
+        {
+          "id": "bias_early",
+          "scenario_key": "bias",
+          "parameters": {
+            "shift_sd": 2.5,
+            "start_run": 8
+          }
+        },
+        {
+          "id": "drift_progressive",
+          "scenario_key": "drift",
+          "parameters": {
+            "total_drift_sd": 5.0,
+            "start_run": 10
+          }
+        },
+        {
+          "id": "imprecision_high",
+          "scenario_key": "imprecision",
+          "parameters": {
+            "sd_multiplier": 3.5,
+            "start_run": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "dense_training_set",
+      "title": "Dense Training Set",
+      "description": "Wider run count and mixed severity for student drills.",
+      "config": {
+        "mean": 92.0,
+        "sd": 1.8,
+        "n_runs": 45,
+        "seed": 7,
+        "analyte": "Creatinine"
+      },
+      "scenarios": [
+        {
+          "id": "normal_long",
+          "scenario_key": "normal"
+        },
+        {
+          "id": "bias_late",
+          "scenario_key": "bias",
+          "parameters": {
+            "shift_sd": 3.5,
+            "start_run": 20
+          }
+        },
+        {
+          "id": "drift_soft",
+          "scenario_key": "drift",
+          "parameters": {
+            "total_drift_sd": 2.5,
+            "start_run": 16
+          }
+        },
+        {
+          "id": "imprecision_mid",
+          "scenario_key": "imprecision",
+          "parameters": {
+            "sd_multiplier": 2.2,
+            "start_run": 18
+          }
+        }
+      ]
+    }
+  ]
+}

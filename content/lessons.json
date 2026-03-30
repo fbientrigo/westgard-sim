@@ -1,0 +1,38 @@
+{
+  "normal": {
+    "guiding_questions": [
+      "What percentage of values would you expect to fall within ±1 standard deviation of the mean?",
+      "Why do some values fall outside ±2SD even though the process is 'in control'?",
+      "If you see one value beyond +2SD, does that automatically mean something is wrong?"
+    ],
+    "challenge_prompt": "Examine the Levey-Jennings chart. Count how many points fall within each zone (±1SD, ±2SD, ±3SD). Do the proportions match what you'd expect from a normal distribution?",
+    "reveal_text": "In a normal distribution, approximately 68% of values fall within ±1SD, 95% within ±2SD, and 99.7% within ±3SD. With 30 runs, you'd expect about 1-2 values beyond ±2SD even when everything is working perfectly. This is why Westgard rules require patterns (multiple violations) rather than single excursions to trigger rejection."
+  },
+  "bias": {
+    "guiding_questions": [
+      "At which run number does the pattern change?",
+      "What might cause a sudden shift like this in a real laboratory?",
+      "Which Westgard rules would detect this pattern earliest?"
+    ],
+    "challenge_prompt": "Calculate the mean of runs 1-10 and compare it to the mean of runs 11-30. How many standard deviations apart are they? What real-world laboratory event could cause this?",
+    "reveal_text": "The shift occurs at run 11, with an upward bias of 3 standard deviations. This pattern would trigger the 1-3s rule (single value beyond ±3SD) and the 2-2s rule (two consecutive values beyond ±2SD on the same side). In practice, this could result from: new reagent lot with different calibration, instrument recalibration, or a systematic change in sample preparation. The key action is to stop testing, investigate the cause, recalibrate if needed, and re-run controls before releasing patient results."
+  },
+  "drift": {
+    "guiding_questions": [
+      "How is this pattern different from the bias scenario?",
+      "Why might drift be harder to detect than bias in real time?",
+      "What environmental or equipment factors could cause progressive drift?"
+    ],
+    "challenge_prompt": "Plot the trend line through runs 11-30. Is the drift linear or exponential? At what run number do values consistently exceed +2SD?",
+    "reveal_text": "Unlike bias (sudden shift), drift shows a gradual linear increase starting at run 11, eventually reaching 4SD above baseline. Drift is harder to detect because each individual value may not look alarming—it's the trend that matters. The 10x rule (10 consecutive values on one side of the mean) is specifically designed to detect drift. Real causes include: reagent degradation over time, gradual temperature changes, progressive instrument component wear, or evaporation in reagent containers. Regular preventive maintenance and proper reagent storage help prevent drift."
+  },
+  "imprecision": {
+    "guiding_questions": [
+      "Does the mean value change between runs 1-10 and runs 11-30?",
+      "What is the key difference between imprecision and the other failure modes?",
+      "Why is increased variability still a problem even if the mean is correct?"
+    ],
+    "challenge_prompt": "Calculate the standard deviation for runs 1-10 and compare it to runs 11-30. How many times larger is the variability after run 11?",
+    "reveal_text": "The mean stays constant at 100, but the standard deviation increases by a factor of 3 starting at run 11. Unlike bias and drift (which affect accuracy), imprecision affects precision/reproducibility. This means individual patient results become less reliable and less comparable between runs. Causes include: inconsistent pipetting technique, incomplete mixing, air bubbles, worn pipette tips, or unstable reagent temperature. The R-4s rule (consecutive values alternating >1SD) helps detect this pattern. Resolution requires identifying and correcting the source of variability in the measurement process."
+  }
+}
