@@ -13,6 +13,8 @@ dependencies = [
     "numpy>=1.25",
     "pandas>=2.0",
     "matplotlib>=3.7",
+    "jsonschema>=4.18",
+    "streamlit>=1.36",
 ]
 
 [project.optional-dependencies]

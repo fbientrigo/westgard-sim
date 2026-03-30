@@ -10,6 +10,8 @@ dist/
 build/
 *.egg-info/
 *.egg
+*.tsbuildinfo
+node_modules/
 
 # Virtual environments
 .venv/
@@ -21,6 +23,8 @@ env/
 
 # Outputs (generated at runtime)
 outputs/
+apps/student-web/public/web_data/
+apps/student-web/public/educational/
 
 # Jupyter
 .ipynb_checkpoints/
