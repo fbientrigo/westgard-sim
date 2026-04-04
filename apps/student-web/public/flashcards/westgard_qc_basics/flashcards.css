@@ -1,0 +1,215 @@
+:root {
+  --color-page-background: #f4efe7;
+  --color-surface: #fffdf9;
+  --color-surface-muted: #efe6d6;
+  --color-text-primary: #1f1a16;
+  --color-text-secondary: #5d5147;
+  --color-border: #d6c7b3;
+  --color-accent: #8f4a2b;
+  --color-accent-soft: #f6d4bf;
+  --color-rule: #7a2e1f;
+  --color-warning: #9c6a11;
+  --color-rejection: #8a1c1c;
+  --color-specimen: #36656d;
+  --color-instrument: #4d4f8f;
+  --color-qc: #24613e;
+  --font-body: 'Georgia', 'Times New Roman', serif;
+  --font-heading: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+  --font-size-base: 17px;
+  --line-height-base: 1.55;
+  --card-radius: 18px;
+  --card-shadow: 0 18px 45px rgba(31, 26, 22, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  background:
+    radial-gradient(circle at top left, rgba(143, 74, 43, 0.12), transparent 28rem),
+    linear-gradient(180deg, var(--color-page-background), #f8f4ee 60%, #f1eadf);
+  color: var(--color-text-primary);
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+}
+
+.hero {
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: calc(var(--card-radius) + 6px);
+  background: linear-gradient(135deg, var(--color-surface), var(--color-surface-muted));
+  box-shadow: var(--card-shadow);
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-size: 0.84rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.05;
+}
+
+.subtitle,
+.description,
+.meta {
+  color: var(--color-text-secondary);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin-top: 16px;
+  font-size: 0.95rem;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tag {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(143, 74, 43, 0.12);
+  color: var(--color-accent);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.flashcard {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+  background: var(--color-surface);
+  box-shadow: var(--card-shadow);
+}
+
+.flashcard-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.flashcard-id,
+.flashcard-type {
+  font-size: 0.82rem;
+  font-family: var(--font-heading);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.flashcard-face {
+  display: grid;
+  gap: 8px;
+}
+
+.flashcard-face h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.flashcard-text {
+  margin: 0;
+}
+
+code {
+  font-family: var(--font-mono);
+  padding: 0.1em 0.35em;
+  border-radius: 0.35em;
+  background: rgba(31, 26, 22, 0.08);
+}
+
+.semantic {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.12em 0.55em;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.95em;
+  white-space: nowrap;
+}
+
+.semantic-label {
+  font-family: var(--font-heading);
+  font-size: 0.72em;
+  letter-spacing: 0.08em;
+}
+
+.semantic-rule {
+  color: var(--color-rule);
+  background: rgba(122, 46, 31, 0.12);
+}
+
+.semantic-warning {
+  color: var(--color-warning);
+  background: rgba(156, 106, 17, 0.12);
+}
+
+.semantic-rejection {
+  color: var(--color-rejection);
+  background: rgba(138, 28, 28, 0.12);
+}
+
+.semantic-specimen {
+  color: var(--color-specimen);
+  background: rgba(54, 101, 109, 0.12);
+}
+
+.semantic-instrument {
+  color: var(--color-instrument);
+  background: rgba(77, 79, 143, 0.12);
+}
+
+.semantic-qc {
+  color: var(--color-qc);
+  background: rgba(36, 97, 62, 0.12);
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 24px 14px 40px;
+  }
+
+  .hero,
+  .flashcard {
+    padding: 18px;
+  }
+}

@@ -108,6 +108,69 @@ python scripts/export_web_data.py --catalog content/experiment_catalog.json --ou
 pytest
 ```
 
+### Flashcards: edicion y export
+
+Deck editable actual:
+
+- `content/flashcards/westgard_qc_basics.deck.json`
+
+Guia detallada:
+
+- `docs/FLASHCARDS_GUIDE.md`
+
+Comando recomendado usando el `.venv` del repo:
+
+```powershell
+.\.venv\python.exe scripts\export_flashcards.py --deck content/flashcards/westgard_qc_basics.deck.json --output-dir outputs/flashcards/westgard_qc_basics
+```
+
+Salida esperada:
+
+- `outputs/flashcards/westgard_qc_basics/westgard_qc_basics.csv`
+- `outputs/flashcards/westgard_qc_basics/preview.html`
+- `outputs/flashcards/westgard_qc_basics/flashcards.css`
+- `outputs/flashcards/westgard_qc_basics/manifest.json`
+- `outputs/flashcards/westgard_qc_basics/study_deck.json`
+
+Punto de revision visual inmediato:
+
+- abrir `outputs/flashcards/westgard_qc_basics/preview.html`
+- para llevarlas a la web: `cd apps/student-web && npm run sync:data`
+
+### Flashcards en la web
+
+La web de estudiantes ahora incluye una sesion interactiva de flashcards con tres pilas y progreso local.
+
+Flujo recomendado:
+
+```powershell
+# 1) exportar el deck
+.\.venv\python.exe scripts\export_flashcards.py --deck content/flashcards/westgard_qc_basics.deck.json --output-dir outputs/flashcards/westgard_qc_basics
+
+# 2) sincronizar assets estaticos al frontend
+cd apps/student-web
+npm run sync:data
+
+# 3) correr la web local
+npm run dev
+```
+
+Ruta dentro de la web:
+
+- `/#/flashcards`
+
+Archivos que consume la web:
+
+- `public/flashcards/westgard_qc_basics/study_deck.json`
+
+Comportamiento del MVP:
+
+- tres pilas: nuevas, en practica y repaso
+- sin backend; el progreso se guarda en `localStorage`
+- controles minimos: `Mostrar respuesta`, `Repetir`, `La supe`
+- si una tarjeta falla, vuelve a la pila 1
+- si una tarjeta acierta, avanza una pila
+
 ## 4. Flujo correcto para generar datos de UI
 
 El flujo recomendado para authoring es:
@@ -165,7 +228,9 @@ El frontend vive en `apps/student-web` y consume directamente el contrato export
 - Workflow: `.github/workflows/student-pages.yml`
 - El workflow:
   - exporta dataset con Python,
+  - exporta flashcards con Python,
   - sincroniza `outputs/web_data` en `apps/student-web/public/web_data`,
+  - sincroniza `outputs/flashcards` en `apps/student-web/public/flashcards`,
   - compila el frontend con base path de Pages,
   - publica `apps/student-web/dist`.
 
@@ -207,6 +272,7 @@ Uso de UI authoring:
 - `docs/AUTHORING_MVP_TUTORIAL.md`
 - `docs/AUTHORING_MVP_GUIDE.md`
 - `docs/crear_experimento.md`
+- `docs/FLASHCARDS_GUIDE.md`
 
 Frontend estudiante:
 

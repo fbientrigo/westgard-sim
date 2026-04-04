@@ -333,7 +333,7 @@ def _editor(data: Dict[str, Any]) -> None:
         )
     with c2:
         config["n_runs"] = int(
-            st.number_input("Cantidad de corridas (n_runs)", value=int(config.get("n_runs", 30)), min_value=5)
+            st.number_input("Cantidad de ejecuciones (n_runs)", value=int(config.get("n_runs", 30)), min_value=5)
         )
         config["seed"] = int(st.number_input("Semilla (seed)", value=int(config.get("seed", 42)), min_value=0))
 
@@ -391,7 +391,7 @@ def _editor(data: Dict[str, Any]) -> None:
     elif scenario["type"] == "trend":
         params["drift_per_run"] = float(
             st.number_input(
-                "Cambio por corrida (drift_per_run)",
+                "Cambio por ejecucion (drift_per_run)",
                 value=float(params.get("drift_per_run", 0.25)),
                 help="Pendiente por run en unidades de SD.",
             )

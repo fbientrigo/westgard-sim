@@ -1,0 +1,235 @@
+{
+  "deck_id": "westgard_qc_basics",
+  "format_version": "1.0",
+  "card_count": 20,
+  "source_deck": "content/flashcards/westgard_qc_basics.deck.json",
+  "theme_path": "C:/Users/Asus/Documents/code/westgard/content/flashcards/theme_tokens.json",
+  "outputs": {
+    "csv": "westgard_qc_basics.csv",
+    "html_preview": "preview.html",
+    "css": "flashcards.css",
+    "study_deck": "study_deck.json"
+  },
+  "cards": [
+    {
+      "id": "qc-purpose",
+      "card_type": "concept",
+      "front": "¿Cual es el proposito principal del [[qc:control de calidad]] interno en un laboratorio clinico?",
+      "back": "Verificar que el proceso analitico se mantiene estable y confiable antes de liberar resultados de pacientes.",
+      "tags": [
+        "fundamentos"
+      ],
+      "sort_order": 1,
+      "notes": null
+    },
+    {
+      "id": "control-material-definition",
+      "card_type": "concept",
+      "front": "¿Que es un material de control?",
+      "back": "Es una muestra no perteneciente a un paciente, con un comportamiento esperado conocido, utilizada para vigilar el desempeno del metodo.",
+      "tags": [
+        "fundamentos"
+      ],
+      "sort_order": 2,
+      "notes": null
+    },
+    {
+      "id": "mean-and-sd",
+      "card_type": "concept",
+      "front": "¿Por que la *media* y la *desviacion estandar* son importantes en la revision del [[qc:control de calidad]]?",
+      "back": "La media define el centro esperado y la desviacion estandar describe la dispersion habitual alrededor de ese centro.",
+      "tags": [
+        "estadistica"
+      ],
+      "sort_order": 3,
+      "notes": null
+    },
+    {
+      "id": "one-two-s-rule",
+      "card_type": "rule_identification",
+      "front": "¿Que significa la regla [[rule:1-2s]]?",
+      "back": "Un resultado de control excede la media por mas de 2 DE. Se considera sobre todo una regla de [[warning:advertencia]] y no una regla automatica de rechazo.",
+      "tags": [
+        "reglas-westgard"
+      ],
+      "sort_order": 4,
+      "notes": null
+    },
+    {
+      "id": "one-three-s-rule",
+      "card_type": "rule_identification",
+      "front": "¿Que indica la regla [[rule:1-3s]]?",
+      "back": "Un resultado de control excede la media por mas de 3 DE, lo que sugiere un problema analitico importante y respalda el [[rejection:rechazo de la ejecucion]].",
+      "tags": [
+        "reglas-westgard"
+      ],
+      "sort_order": 5,
+      "notes": null
+    },
+    {
+      "id": "two-two-s-rule",
+      "card_type": "rule_identification",
+      "front": "¿Como se reconoce la regla [[rule:2-2s]]?",
+      "back": "Dos resultados consecutivos exceden el mismo limite de 2 DE en el mismo lado de la media. Esto apoya el [[rejection:rechazo]] por error sistematico.",
+      "tags": [
+        "reglas-westgard"
+      ],
+      "sort_order": 6,
+      "notes": null
+    },
+    {
+      "id": "r-four-s-rule",
+      "card_type": "rule_identification",
+      "front": "¿Que patron define la regla [[rule:R-4s]]?",
+      "back": "Dos resultados de control en la misma ejecucion difieren en mas de 4 DE, lo que orienta a incremento del error aleatorio.",
+      "tags": [
+        "reglas-westgard"
+      ],
+      "sort_order": 7,
+      "notes": null
+    },
+    {
+      "id": "four-one-s-rule",
+      "card_type": "rule_identification",
+      "front": "¿Que suele sugerir la regla [[rule:4-1s]]?",
+      "back": "Cuatro resultados consecutivos exceden 1 DE en el mismo lado de la media, lo que sugiere un desplazamiento persistente.",
+      "tags": [
+        "reglas-westgard"
+      ],
+      "sort_order": 8,
+      "notes": null
+    },
+    {
+      "id": "ten-x-rule",
+      "card_type": "rule_identification",
+      "front": "¿Que significa la regla [[rule:10x]]?",
+      "back": "Diez resultados consecutivos de control caen en el mismo lado de la media, senal fuerte de sesgo sistematico.",
+      "tags": [
+        "reglas-westgard"
+      ],
+      "sort_order": 9,
+      "notes": null
+    },
+    {
+      "id": "warning-versus-rejection",
+      "card_type": "interpretation",
+      "front": "¿Por que [[rule:1-2s]] se trata distinto de [[rule:1-3s]]?",
+      "back": "Porque [[rule:1-2s]] es sensible pero menos especifica y obliga a revisar, mientras que [[rule:1-3s]] es mas compatible con un problema analitico real.",
+      "tags": [
+        "toma-de-decision"
+      ],
+      "sort_order": 10,
+      "notes": null
+    },
+    {
+      "id": "same-side-shift",
+      "card_type": "interpretation",
+      "front": "Si varios resultados de control suben y permanecen sobre la media, ¿que debe sospecharse primero?",
+      "back": "Un desplazamiento sistematico, como deriva de calibracion, cambio de lote de reactivo o ajuste del [[instrument:instrumento]].",
+      "tags": [
+        "error-sistematico"
+      ],
+      "sort_order": 11,
+      "notes": null
+    },
+    {
+      "id": "wide-scatter",
+      "card_type": "interpretation",
+      "front": "Si una grafica muestra dispersion amplia arriba y abajo de la media sin direccion estable, ¿que tipo de error es mas probable?",
+      "back": "Error aleatorio, sobre todo si el patron activa [[rule:R-4s]] o eventos aislados de [[rule:1-3s]].",
+      "tags": [
+        "error-aleatorio"
+      ],
+      "sort_order": 12,
+      "notes": null
+    },
+    {
+      "id": "post-maintenance-review",
+      "card_type": "lab_context",
+      "front": "¿Por que deben revisarse con cuidado los controles despues del mantenimiento del analizador?",
+      "back": "Porque el mantenimiento puede cambiar la linea basal del sistema y hacer visible un nuevo sesgo o un aumento de imprecision.",
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "sort_order": 13,
+      "notes": null
+    },
+    {
+      "id": "specimen-versus-control",
+      "card_type": "lab_context",
+      "front": "¿Por que un resultado estable de [[qc:control de calidad]] no garantiza que toda [[specimen:muestra de paciente]] este libre de error?",
+      "back": "Porque el control de calidad vigila el sistema analitico, pero aun pueden existir problemas preanaliticos o propios de la muestra.",
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "sort_order": 14,
+      "notes": null
+    },
+    {
+      "id": "reagent-lot-change",
+      "card_type": "lab_context",
+      "front": "Se introduce un nuevo lote de reactivo y ambos controles se desplazan hacia arriba. ¿Que explicacion es la mas plausible?",
+      "back": "Un efecto sistematico relacionado con el lote. Debe verificarse la calibracion, comparar con el lote previo y considerar [[rejection:retener resultados]] hasta explicar el cambio.",
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "sort_order": 15,
+      "notes": null
+    },
+    {
+      "id": "delta-check-context",
+      "card_type": "lab_context",
+      "front": "¿Como complementan los delta checks al [[qc:control de calidad]] interno?",
+      "back": "Ayudan a detectar cambios inesperados en datos de pacientes y agregan una comprobacion clinica que el control de calidad por si solo no aporta.",
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "sort_order": 16,
+      "notes": null
+    },
+    {
+      "id": "multi-rule-rationale",
+      "card_type": "concept",
+      "front": "¿Por que las reglas de Westgard suelen usarse como estrategia *multirregla*?",
+      "back": "Porque combinarlas mejora el equilibrio entre deteccion de error y falso rechazo frente a distintos patrones de falla.",
+      "tags": [
+        "reglas-westgard"
+      ],
+      "sort_order": 17,
+      "notes": null
+    },
+    {
+      "id": "reject-run-action",
+      "card_type": "interpretation",
+      "front": "Si se activa una regla clara de [[rejection:rechazo]], ¿cual es la accion inmediata mas segura?",
+      "back": "**No liberar** los resultados afectados hasta investigar la causa y restablecer un desempeno aceptable del control.",
+      "tags": [
+        "toma-de-decision"
+      ],
+      "sort_order": 18,
+      "notes": null
+    },
+    {
+      "id": "control-levels",
+      "card_type": "lab_context",
+      "front": "¿Por que muchos laboratorios procesan mas de un nivel de control?",
+      "back": "Porque distintos niveles pueden revelar problemas dependientes de la concentracion que no se observan con un solo nivel.",
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "sort_order": 19,
+      "notes": null
+    },
+    {
+      "id": "manual-review-note",
+      "card_type": "lab_context",
+      "front": "¿Que debe documentarse despues de un evento importante de control de calidad?",
+      "back": "El patron observado, la causa probable, la accion correctiva y la decision sobre repetir o retener el reporte de pacientes.",
+      "tags": [
+        "documentacion"
+      ],
+      "sort_order": 20,
+      "notes": null
+    }
+  ]
+}

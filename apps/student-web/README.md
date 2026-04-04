@@ -5,7 +5,8 @@ Frontend para estudiantes que consume datasets estaticos exportados por el motor
 ## Requisitos
 
 - Node.js 20+ (en este repo ya se detecta Node 24)
-- Dataset exportado en `outputs/web_data` (generado por pipeline Python)
+- Dataset exportado en `outputs/web_data`
+- Flashcards exportadas en `outputs/flashcards`
 
 ## Comandos
 
@@ -15,7 +16,7 @@ Desde la raiz del repo:
 # instalar dependencias
 .\student_web_ops.ps1 -Action install
 
-# sincronizar dataset exportado y contenido educativo opcional
+# sincronizar assets estaticos
 .\student_web_ops.ps1 -Action sync
 
 # correr en local
@@ -37,13 +38,31 @@ npm run sync:data
 npm run dev
 ```
 
+## Flashcards interactivas
+
+La ruta `/#/flashcards` muestra un MVP de estudio con tres pilas y persistencia local.
+
+Antes de abrirla:
+
+```powershell
+cd ..
+.\.venv\python.exe scripts\export_flashcards.py --deck content/flashcards/westgard_qc_basics.deck.json --output-dir outputs/flashcards/westgard_qc_basics
+cd apps/student-web
+npm run sync:data
+```
+
+Archivos esperados:
+
+- `public/flashcards/westgard_qc_basics/study_deck.json`
+- `public/flashcards/westgard_qc_basics/preview.html`
+
 ## Arquitectura
 
 ```text
 src/
   app/        # bootstrap, layout, router
-  pages/      # HomePage, ExperimentPage, ScenarioPage
-  features/   # slices de UI (listado, detalle, viewer, chart)
+  pages/      # HomePage, ExperimentPage, ScenarioPage, FlashcardsPage
+  features/   # slices de UI y estudio
   entities/   # modelos de dominio
   shared/     # api, config, utilidades, ui base, types
 ```
@@ -53,6 +72,7 @@ src/
 - `public/web_data/index.json`
 - `public/web_data/experiments/<experiment-id>/manifest.json`
 - `public/web_data/experiments/<experiment-id>/<scenario-id>.json`
+- `public/flashcards/<deck-id>/study_deck.json`
 
 La app valida contratos en runtime con `zod` antes de renderizar.
 
@@ -70,6 +90,7 @@ Si faltan o fallan, la vista de escenario sigue funcionando sin bloquearse.
 El workflow `.github/workflows/student-pages.yml`:
 
 1. Exporta dataset desde Python.
-2. Sincroniza assets al frontend.
-3. Compila Vite con base configurable.
-4. Publica `apps/student-web/dist` en GitHub Pages.
+2. Exporta flashcards desde Python.
+3. Sincroniza assets al frontend.
+4. Compila Vite con base configurable.
+5. Publica `apps/student-web/dist` en GitHub Pages.
