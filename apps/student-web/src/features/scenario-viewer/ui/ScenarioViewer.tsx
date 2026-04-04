@@ -32,7 +32,7 @@ export function ScenarioViewer({
         <StatGrid
           items={[
             { label: "Analito", value: translateAnalyte(scenario.summary.analyte) },
-            { label: "Corridas", value: scenario.summary.n_runs },
+            { label: "Ejecuciones", value: scenario.summary.n_runs },
             {
               label: "Reglas activadas",
               value: `${scenario.summary.triggered_rule_count}`,

@@ -24,7 +24,7 @@ const RULE_PRESENTATION: Record<string, RulePresentation> = {
   "1_3s": {
     displayName: "1 3s",
     severity: "rejection",
-    reason: "Un resultado supero +/-3DE; la corrida debe considerarse fuera de control.",
+    reason: "Un resultado supero +/-3DE; la ejecucion debe considerarse fuera de control.",
   },
   "2_2s": {
     displayName: "2 2s",

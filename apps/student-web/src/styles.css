@@ -49,6 +49,12 @@ body {
   padding: 1.2rem 1rem;
 }
 
+.app-nav {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
 .brand-link {
   color: var(--accent-strong);
   text-decoration: none;
@@ -365,6 +371,147 @@ body {
   padding-left: 1rem;
 }
 
+.flashcards-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.flashcards-hero {
+  overflow: hidden;
+}
+
+.flashcards-eyebrow {
+  margin: 0 0 0.45rem;
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.flashcards-meta-grid,
+.flashcards-pile-grid {
+  align-items: stretch;
+}
+
+.flashcards-pile-card strong {
+  font-size: 1.2rem;
+}
+
+.flashcard-study-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top right, rgba(31, 75, 153, 0.08), transparent 28%),
+    linear-gradient(180deg, #fff 0%, #f9fbff 100%);
+  box-shadow: 0 18px 36px rgba(24, 53, 104, 0.12);
+  padding: 1.1rem;
+}
+
+.flashcard-study-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.flashcard-study-header h3,
+.flashcard-study-face h4 {
+  margin-top: 0;
+}
+
+.flashcard-study-face {
+  border-top: 1px solid var(--line);
+  margin-top: 0.95rem;
+  padding-top: 0.95rem;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.flashcard-study-answer {
+  background: rgba(233, 240, 253, 0.45);
+  border-radius: 12px;
+  padding: 0.95rem;
+}
+
+.flashcard-study-actions {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.flashcard-study-meta {
+  margin-bottom: 0;
+}
+
+.flashcards-inline-tags {
+  justify-content: flex-end;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tag {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.28rem 0.62rem;
+  background: #fff;
+  color: var(--accent-strong);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.flashcard-study-face .semantic {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.08rem 0.42rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.95em;
+  margin-right: 0.15rem;
+}
+
+.flashcard-study-face .semantic-label {
+  font-size: 0.76em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.flashcard-study-face .semantic-rule {
+  color: #7a2e1f;
+  background: rgba(122, 46, 31, 0.08);
+}
+
+.flashcard-study-face .semantic-warning {
+  color: #8a4f00;
+  background: rgba(138, 79, 0, 0.08);
+}
+
+.flashcard-study-face .semantic-rejection {
+  color: #9b3227;
+  background: rgba(155, 50, 39, 0.08);
+}
+
+.flashcard-study-face .semantic-specimen {
+  color: #2a6971;
+  background: rgba(42, 105, 113, 0.08);
+}
+
+.flashcard-study-face .semantic-instrument {
+  color: #4d4f8f;
+  background: rgba(77, 79, 143, 0.08);
+}
+
+.flashcard-study-face .semantic-qc {
+  color: #24613e;
+  background: rgba(36, 97, 62, 0.08);
+}
+
 @media (max-width: 700px) {
   .app-header-inner {
     padding-top: 0.95rem;
@@ -382,5 +529,11 @@ body {
   .chart-tooltip {
     max-width: 220px;
     padding: 0.6rem 0.65rem;
+  }
+
+  .app-nav,
+  .flashcard-study-actions,
+  .flashcard-study-header {
+    flex-direction: column;
   }
 }

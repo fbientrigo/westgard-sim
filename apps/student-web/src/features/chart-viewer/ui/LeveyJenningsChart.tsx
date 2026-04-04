@@ -50,7 +50,7 @@ function TriggerTooltip({
 
   return (
     <div className="chart-tooltip" role="status">
-      <p className="chart-tooltip-title">Corrida {label}</p>
+      <p className="chart-tooltip-title">Ejecucion {label}</p>
       <p className="chart-tooltip-value">
         Valor: <strong>{formatDecimal(pointPayload.value)}</strong>
       </p>
@@ -107,7 +107,7 @@ export function LeveyJenningsChart({
         <ResponsiveContainer height={340} width="100%">
           <LineChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
             <CartesianGrid stroke="#D6D9E0" strokeDasharray="3 3" />
-            <XAxis dataKey="runIndex" label={{ value: "Corrida", position: "insideBottom", offset: -8 }} />
+            <XAxis dataKey="runIndex" label={{ value: "Ejecucion", position: "insideBottom", offset: -8 }} />
             <YAxis
               domain={["auto", "auto"]}
               label={{ value: "Valor", angle: -90, position: "insideLeft" }}
@@ -145,7 +145,7 @@ export function LeveyJenningsChart({
         </ResponsiveContainer>
       </div>
       <p className="chart-caption">
-        Puntos en rojo indican primera corrida de activacion reportada por alguna regla.
+        Puntos en rojo indican la primera ejecucion de activacion reportada por alguna regla.
       </p>
     </section>
   );

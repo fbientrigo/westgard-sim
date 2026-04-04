@@ -1,6 +1,7 @@
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AppLayout } from "@/app/AppLayout";
 import { ExperimentPage } from "@/pages/ExperimentPage";
+import { FlashcardsPage } from "@/pages/FlashcardsPage";
 import { HomePage } from "@/pages/HomePage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { ScenarioPage } from "@/pages/ScenarioPage";
@@ -11,6 +12,7 @@ export function AppRouter(): JSX.Element {
       <Routes>
         <Route element={<AppLayout />} path="/">
           <Route element={<HomePage />} index />
+          <Route element={<FlashcardsPage />} path="flashcards" />
           <Route element={<ExperimentPage />} path="experiments/:experimentId" />
           <Route
             element={<ScenarioPage />}

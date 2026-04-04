@@ -22,7 +22,7 @@ export function ExperimentOverview({ experiment }: { experiment: ExperimentDetai
           { label: "Analito", value: translateAnalyte(experiment.config.analyte) },
           { label: "Media", value: formatDecimal(experiment.config.mean) },
           { label: "SD", value: formatDecimal(experiment.config.sd) },
-          { label: "Corridas", value: experiment.config.n_runs },
+          { label: "Ejecuciones", value: experiment.config.n_runs },
           { label: "Semilla", value: experiment.config.seed },
         ]}
       />

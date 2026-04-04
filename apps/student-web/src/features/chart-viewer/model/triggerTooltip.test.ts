@@ -25,7 +25,7 @@ describe("buildTriggerDetailsByRun", () => {
         ruleName: "1_3s",
         displayName: "1 3s",
         severity: "rejection",
-        reason: "Un resultado supero +/-3DE; la corrida debe considerarse fuera de control.",
+        reason: "Un resultado supero +/-3DE; la ejecucion debe considerarse fuera de control.",
       },
     ]);
 

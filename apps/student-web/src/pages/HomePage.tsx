@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ExperimentList } from "@/features/experiment-list/ui/ExperimentList";
 import { listExperiments } from "@/shared/api/studentDataApi";
 import { useAsyncResource } from "@/shared/lib/useAsyncResource";
@@ -25,5 +26,21 @@ export function HomePage(): JSX.Element {
     );
   }
 
-  return <ExperimentList experiments={data.experiments} />;
+  return (
+    <>
+      <section className="content-section">
+        <div className="section-header">
+          <h2>Estudio rapido con flashcards</h2>
+          <p>
+            Revisa conceptos, reglas e interpretacion con una sesion interactiva de tres pilas
+            guardada en este navegador.
+          </p>
+        </div>
+        <Link className="button-primary" to="/flashcards">
+          Abrir sesion de flashcards
+        </Link>
+      </section>
+      <ExperimentList experiments={data.experiments} />
+    </>
+  );
 }

@@ -1,4 +1,5 @@
 import {
+  parseFlashcardStudyDeck,
   parseExperimentIndex,
   parseExperimentManifest,
   parseScenarioPayload,
@@ -39,5 +40,38 @@ describe("contracts parser", () => {
 
   it("rejects scenario payload without required keys", () => {
     expect(() => parseScenarioPayload({ scenario_name: "only name" })).toThrow();
+  });
+
+  it("accepts valid flashcard study deck payload", () => {
+    const parsed = parseFlashcardStudyDeck({
+      deck_id: "westgard_qc_basics",
+      format_version: "1.0",
+      metadata: {
+        title: "Deck",
+        subtitle: "Sub",
+        language: "es",
+        audience: "Estudiantes",
+        description: "Desc",
+        author: "Westgard",
+        tags: ["westgard"],
+        display_tags: ["Westgard"],
+        notes: null,
+      },
+      cards: [
+        {
+          id: "card_1",
+          card_type: "concept",
+          card_type_label: "Concepto",
+          sort_order: 1,
+          tags: ["fundamentos"],
+          display_tags: ["Fundamentos"],
+          front_html: "<p>uno</p>",
+          back_html: "<p>dos</p>",
+          front_source: "uno",
+          back_source: "dos",
+        },
+      ],
+    });
+    expect(parsed.cards[0].card_type_label).toBe("Concepto");
   });
 });
