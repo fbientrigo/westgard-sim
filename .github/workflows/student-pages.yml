@@ -39,6 +39,9 @@ jobs:
       - name: Export web dataset
         run: python scripts/export_web_data.py --catalog content/experiment_catalog.json --output-dir outputs/web_data
 
+      - name: Export flashcards
+        run: python scripts/export_flashcards.py --deck content/flashcards/westgard_qc_basics.deck.json --output-dir outputs/flashcards/westgard_qc_basics
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -50,7 +53,7 @@ jobs:
         run: npm ci
         working-directory: apps/student-web
 
-      - name: Sync dataset into frontend public assets
+      - name: Sync static assets into frontend public assets
         run: npm run sync:data
         working-directory: apps/student-web
 
