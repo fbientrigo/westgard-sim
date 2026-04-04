@@ -1,6 +1,6 @@
 # Westgard Pilot Recovery Guide
 
-Objetivo: recuperar rapido el estado operativo si una corrida de release falla o deja salidas inconsistentes.
+Objetivo: recuperar rapido el estado operativo si una ejecucion de release falla o deja salidas inconsistentes.
 
 ## Donde quedan los backups
 

@@ -21,6 +21,7 @@ Este directorio contiene la documentacion operativa del flujo local de authoring
 - `PILOT_RECOVERY_GUIDE.md`: recuperacion desde backups y restauracion.
 - `STUDENT_FRONTEND_PLAN.md`: plan incremental de implementacion del frontend estudiante.
 - `STUDENT_FRONTEND_GUIDE.md`: guia operativa del frontend estudiante (local + Pages).
+- `FLASHCARDS_GUIDE.md`: authoring y export de decks de flashcards para Anki + preview HTML.
 
 ## Nota importante
 

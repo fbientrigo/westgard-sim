@@ -30,63 +30,63 @@ Publicar una web de estudiantes que consume el export estatico del simulador sin
 .\student_web_ops.ps1 -Action dev
 ```
 
-5. Build estático:
+5. Build estatico:
 
 ```powershell
 .\student_web_ops.ps1 -Action build
 ```
 
-## Estrategia de integración de datos (opción elegida)
+## Estrategia de integracion de datos
 
-Se implementó **Opción A**:
+Se implemento la opcion de consumir assets estaticos sincronizados:
 
 - Fuente: `outputs/web_data`
 - Destino: `apps/student-web/public/web_data`
-- Script de sync automatizado principal: `apps/student-web/scripts/run-sync.mjs`
-- Script Python alternativo (CLI reutilizable): `scripts/sync_student_web_assets.py`
+- Script de sync principal: `apps/student-web/scripts/run-sync.mjs`
+- Script Python alternativo: `scripts/sync_student_web_assets.py`
 
-Razón:
+Razon:
 
-- Mantiene separadas responsabilidades (simulación/export vs frontend).
-- Permite preview local inmediato con Vite y assets estáticos.
+- Mantiene separadas responsabilidades.
+- Permite preview local inmediato con Vite y assets estaticos.
 - Simplifica el artefacto final de Pages.
 
 ## Contenido educativo
 
-Decisión: integrar ahora de forma no invasiva con adapter opcional.
+El script de sync tambien copia:
 
-- El script de sync también copia:
-  - `content/scenarios.json` -> `apps/student-web/public/educational/scenarios.json`
-  - `content/lessons.json` -> `apps/student-web/public/educational/lessons.json`
-- La app lo consume con `educationalAdapter`.
-- Si faltan archivos o contrato no válido, el render principal del escenario no se rompe.
+- `content/scenarios.json` -> `apps/student-web/public/educational/scenarios.json`
+- `content/lessons.json` -> `apps/student-web/public/educational/lessons.json`
+
+La app lo consume con `educationalAdapter`. Si faltan archivos o el contrato falla, el render principal del escenario no se rompe.
 
 ## Deploy en GitHub Pages
 
 Workflow: `.github/workflows/student-pages.yml`.
 
 - Build job:
-  - instala Python deps,
-  - exporta `outputs/web_data`,
-  - instala frontend,
-  - sincroniza datos,
-  - compila Vite con `VITE_BASE_PATH`.
+  - instala dependencias Python
+  - exporta `outputs/web_data`
+  - exporta `outputs/flashcards`
+  - instala frontend
+  - sincroniza datos
+  - compila Vite con `VITE_BASE_PATH`
 - Deploy job:
-  - publica artefacto `apps/student-web/dist`.
+  - publica `apps/student-web/dist`
 
 Base path:
 
-- Si el repo termina en `.github.io`, usa `/`.
-- En caso contrario, usa `/<repo>/`.
+- Si el repo termina en `.github.io`, usa `/`
+- En caso contrario, usa `/<repo>/`
 
-## Tradeoffs técnicos
+## Tradeoffs tecnicos
 
 - Router en hash (`/#/...`) para compatibilidad robusta con Pages sin rewrites.
-- `zod` agrega costo mínimo de runtime, pero protege contra drift del contrato JSON.
-- No se incorporó estado global complejo (Redux/React Query) para mantener simplicidad y evitar sobreingeniería en fase inicial.
+- `zod` agrega costo minimo de runtime, pero protege contra drift del contrato JSON.
+- No se incorporo estado global complejo para mantener simplicidad.
 
 ## Limitaciones abiertas
 
-- No hay internacionalización activa aún (arquitectura preparada para crecer).
-- No hay comparador entre escenarios todavía.
-- La detección visual de triggers se basa en `first_trigger_run` por regla; se puede ampliar en futuras iteraciones a eventos por corrida/regla.
+- No hay internacionalizacion activa aun.
+- No hay comparador entre escenarios todavia.
+- La deteccion visual de triggers se basa en `first_trigger_run` por regla; se puede ampliar en futuras iteraciones a eventos por ejecucion y regla.
