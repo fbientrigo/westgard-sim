@@ -1,0 +1,27 @@
+{
+  "palette": {
+    "page_background": "#f4efe7",
+    "surface": "#fffdf9",
+    "surface_muted": "#efe6d6",
+    "text_primary": "#1f1a16",
+    "text_secondary": "#5d5147",
+    "border": "#d6c7b3",
+    "accent": "#8f4a2b",
+    "accent_soft": "#f6d4bf",
+    "rule": "#7a2e1f",
+    "warning": "#9c6a11",
+    "rejection": "#8a1c1c",
+    "specimen": "#36656d",
+    "instrument": "#4d4f8f",
+    "qc": "#24613e"
+  },
+  "typography": {
+    "font_body": "'Georgia', 'Times New Roman', serif",
+    "font_heading": "'Trebuchet MS', 'Segoe UI', sans-serif",
+    "font_mono": "'Consolas', 'Courier New', monospace",
+    "base_size_px": 17,
+    "line_height": 1.55,
+    "card_radius_px": 18,
+    "card_shadow": "0 18px 45px rgba(31, 26, 22, 0.08)"
+  }
+}
