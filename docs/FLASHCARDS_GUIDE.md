@@ -54,6 +54,24 @@ No escribas HTML crudo dentro de las tarjetas. El exportador lo escapa.
 
 ## Flujo operativo recomendado
 
+### Opcion UI local para Beatriz
+
+La forma mas simple ahora es abrir:
+
+```powershell
+.\run_authoring_ui.ps1
+```
+
+Y trabajar en la pestaña `Flashcards`:
+
+1. Abrir el deck desde la barra lateral.
+2. Crear o reordenar tarjetas.
+3. Editar tags del deck y de cada tarjeta.
+4. Revisar la vista previa rapida.
+5. Exportar y publicar desde la pestaña `Publicar`.
+
+### Opcion CLI
+
 ### 1. Activar el entorno
 
 En Windows PowerShell, desde la raiz del repo:

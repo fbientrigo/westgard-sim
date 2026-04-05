@@ -27,12 +27,12 @@ function Resolve-PythonPath {
 
 $pythonCmd = Resolve-PythonPath
 
-Write-Host "Iniciando Westgard Authoring MVP..." -ForegroundColor Cyan
+Write-Host "Iniciando Westgard Authoring Studio..." -ForegroundColor Cyan
 Write-Host "Repositorio: $repoRoot"
 Write-Host "Python: $pythonCmd"
-Write-Host "Nota: abrir la UI no genera export automaticamente." -ForegroundColor Yellow
-Write-Host "Para generar datos web usa 'Build technical catalog' + 'Export static web data'" -ForegroundColor Yellow
-Write-Host "o ejecuta: .\westgard_ops.ps1 -Action release" -ForegroundColor Yellow
+Write-Host "La UI ahora integra experimentos, flashcards y publicacion local." -ForegroundColor Yellow
+Write-Host "Usa la pestaña 'Publicar' para generar carpetas listas para compartir" -ForegroundColor Yellow
+Write-Host "o para copiar datos a apps/student-web/public en tu PC local." -ForegroundColor Yellow
 
 try {
     & $pythonCmd -m streamlit --version | Out-Null
