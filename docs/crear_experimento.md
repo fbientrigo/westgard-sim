@@ -58,7 +58,7 @@ Guia practica para editar `content/authoring_catalog.example.json` sin romper va
 
 - `mean`: media objetivo del control.
 - `sd`: desviacion estandar base. Debe ser mayor a 0.
-- `n_runs`: cantidad de corridas simuladas (minimo 5).
+- `n_runs`: cantidad de ejecuciones simuladas (minimo 5).
 - `seed`: semilla para reproducibilidad.
 
 ### Nivel escenario
@@ -75,9 +75,9 @@ Guia practica para editar `content/authoring_catalog.example.json` sin romper va
 
 Campos posibles (dependen del `type`):
 
-- `start_run`: corrida desde donde inicia el problema.
+- `start_run`: ejecucion desde donde inicia el problema.
 - `shift_sd`: magnitud de sesgo en unidades SD.
-- `drift_per_run`: pendiente por corrida (para `trend`).
+- `drift_per_run`: pendiente por ejecucion (para `trend`).
 - `sd_multiplier`: multiplicador de dispersion (para `random_error`).
 
 Recomendacion practica por tipo:

@@ -11,6 +11,14 @@ export function AppLayout(): JSX.Element {
           <p className="brand-subtitle">
             Simulacion de control interno para entrenamiento en reglas de Westgard.
           </p>
+          <nav className="app-nav">
+            <Link className="button-secondary" to="/">
+              Experimentos
+            </Link>
+            <Link className="button-secondary" to="/flashcards">
+              Flashcards
+            </Link>
+          </nav>
         </div>
       </header>
       <main className="app-main">

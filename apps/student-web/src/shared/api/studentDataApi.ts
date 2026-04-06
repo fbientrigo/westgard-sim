@@ -1,5 +1,6 @@
 import { ZodError } from "zod";
 import {
+  parseFlashcardStudyDeck,
   parseExperimentIndex,
   parseExperimentManifest,
   parseScenarioPayload,
@@ -11,8 +12,10 @@ import type {
   ExperimentManifest,
   ScenarioPayload,
 } from "@/shared/types/webData";
+import type { FlashcardStudyDeck } from "@/shared/types/flashcards";
 
 const DATA_ROOT = "web_data";
+const FLASHCARD_ROOT = "flashcards";
 
 function validationError(path: string, error: unknown): Error {
   if (!(error instanceof ZodError)) {
@@ -49,6 +52,16 @@ export async function getScenarioPayload(payloadPath: string): Promise<ScenarioP
   try {
     const payload = await fetchJson(path);
     return parseScenarioPayload(payload);
+  } catch (error) {
+    throw validationError(path, error);
+  }
+}
+
+export async function getFlashcardStudyDeck(deckId: string): Promise<FlashcardStudyDeck> {
+  const path = buildAssetPath(`${FLASHCARD_ROOT}/${deckId}/study_deck.json`);
+  try {
+    const payload = await fetchJson(path);
+    return parseFlashcardStudyDeck(payload);
   } catch (error) {
     throw validationError(path, error);
   }

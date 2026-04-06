@@ -56,7 +56,7 @@ export function ScenarioPage(): JSX.Element {
   }
 
   if (data.scenario.series.length === 0) {
-    return <EmptyState description="El escenario no tiene corridas para visualizar." />;
+    return <EmptyState description="El escenario no tiene ejecuciones para visualizar." />;
   }
 
   return (

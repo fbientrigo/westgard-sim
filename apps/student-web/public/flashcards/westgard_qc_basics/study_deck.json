@@ -1,0 +1,347 @@
+{
+  "deck_id": "westgard_qc_basics",
+  "format_version": "1.0",
+  "metadata": {
+    "title": "Fundamentos del control de calidad Westgard",
+    "subtitle": "Conceptos base para control de calidad interno en el laboratorio clinico",
+    "language": "es",
+    "audience": "Estudiantes y profesionales en formacion de laboratorio clinico",
+    "description": "Baraja introductoria sobre reglas de Westgard, interpretacion de patrones y contexto operativo del laboratorio.",
+    "author": "Westgard Sim",
+    "tags": [
+      "westgard",
+      "qc",
+      "laboratorio-clinico",
+      "educacion"
+    ],
+    "display_tags": [
+      "Westgard",
+      "Control de calidad",
+      "Laboratorio clinico",
+      "Educacion"
+    ],
+    "notes": "Baraja de ejemplo de la fase 1 para exportar a CSV, vista previa HTML y estudio web."
+  },
+  "cards": [
+    {
+      "id": "qc-purpose",
+      "card_type": "concept",
+      "card_type_label": "Concepto",
+      "sort_order": 1,
+      "tags": [
+        "fundamentos"
+      ],
+      "display_tags": [
+        "Fundamentos"
+      ],
+      "front_html": "¿Cual es el proposito principal del <span class=\"semantic semantic-qc\"><span class=\"semantic-label\">Control de calidad</span> control de calidad</span> interno en un laboratorio clinico?",
+      "back_html": "Verificar que el proceso analitico se mantiene estable y confiable antes de liberar resultados de pacientes.",
+      "front_source": "¿Cual es el proposito principal del [[qc:control de calidad]] interno en un laboratorio clinico?",
+      "back_source": "Verificar que el proceso analitico se mantiene estable y confiable antes de liberar resultados de pacientes."
+    },
+    {
+      "id": "control-material-definition",
+      "card_type": "concept",
+      "card_type_label": "Concepto",
+      "sort_order": 2,
+      "tags": [
+        "fundamentos"
+      ],
+      "display_tags": [
+        "Fundamentos"
+      ],
+      "front_html": "¿Que es un material de control?",
+      "back_html": "Es una muestra no perteneciente a un paciente, con un comportamiento esperado conocido, utilizada para vigilar el desempeno del metodo.",
+      "front_source": "¿Que es un material de control?",
+      "back_source": "Es una muestra no perteneciente a un paciente, con un comportamiento esperado conocido, utilizada para vigilar el desempeno del metodo."
+    },
+    {
+      "id": "mean-and-sd",
+      "card_type": "concept",
+      "card_type_label": "Concepto",
+      "sort_order": 3,
+      "tags": [
+        "estadistica"
+      ],
+      "display_tags": [
+        "Estadistica"
+      ],
+      "front_html": "¿Por que la <em>media</em> y la <em>desviacion estandar</em> son importantes en la revision del <span class=\"semantic semantic-qc\"><span class=\"semantic-label\">Control de calidad</span> control de calidad</span>?",
+      "back_html": "La media define el centro esperado y la desviacion estandar describe la dispersion habitual alrededor de ese centro.",
+      "front_source": "¿Por que la *media* y la *desviacion estandar* son importantes en la revision del [[qc:control de calidad]]?",
+      "back_source": "La media define el centro esperado y la desviacion estandar describe la dispersion habitual alrededor de ese centro."
+    },
+    {
+      "id": "one-two-s-rule",
+      "card_type": "rule_identification",
+      "card_type_label": "Identificacion de regla",
+      "sort_order": 4,
+      "tags": [
+        "reglas-westgard"
+      ],
+      "display_tags": [
+        "Reglas de Westgard"
+      ],
+      "front_html": "¿Que significa la regla <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 1-2s</span>?",
+      "back_html": "Un resultado de control excede la media por mas de 2 DE. Se considera sobre todo una regla de <span class=\"semantic semantic-warning\"><span class=\"semantic-label\">Advertencia</span> advertencia</span> y no una regla automatica de rechazo.",
+      "front_source": "¿Que significa la regla [[rule:1-2s]]?",
+      "back_source": "Un resultado de control excede la media por mas de 2 DE. Se considera sobre todo una regla de [[warning:advertencia]] y no una regla automatica de rechazo."
+    },
+    {
+      "id": "one-three-s-rule",
+      "card_type": "rule_identification",
+      "card_type_label": "Identificacion de regla",
+      "sort_order": 5,
+      "tags": [
+        "reglas-westgard"
+      ],
+      "display_tags": [
+        "Reglas de Westgard"
+      ],
+      "front_html": "¿Que indica la regla <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 1-3s</span>?",
+      "back_html": "Un resultado de control excede la media por mas de 3 DE, lo que sugiere un problema analitico importante y respalda el <span class=\"semantic semantic-rejection\"><span class=\"semantic-label\">Rechazo</span> rechazo de la ejecucion</span>.",
+      "front_source": "¿Que indica la regla [[rule:1-3s]]?",
+      "back_source": "Un resultado de control excede la media por mas de 3 DE, lo que sugiere un problema analitico importante y respalda el [[rejection:rechazo de la ejecucion]]."
+    },
+    {
+      "id": "two-two-s-rule",
+      "card_type": "rule_identification",
+      "card_type_label": "Identificacion de regla",
+      "sort_order": 6,
+      "tags": [
+        "reglas-westgard"
+      ],
+      "display_tags": [
+        "Reglas de Westgard"
+      ],
+      "front_html": "¿Como se reconoce la regla <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 2-2s</span>?",
+      "back_html": "Dos resultados consecutivos exceden el mismo limite de 2 DE en el mismo lado de la media. Esto apoya el <span class=\"semantic semantic-rejection\"><span class=\"semantic-label\">Rechazo</span> rechazo</span> por error sistematico.",
+      "front_source": "¿Como se reconoce la regla [[rule:2-2s]]?",
+      "back_source": "Dos resultados consecutivos exceden el mismo limite de 2 DE en el mismo lado de la media. Esto apoya el [[rejection:rechazo]] por error sistematico."
+    },
+    {
+      "id": "r-four-s-rule",
+      "card_type": "rule_identification",
+      "card_type_label": "Identificacion de regla",
+      "sort_order": 7,
+      "tags": [
+        "reglas-westgard"
+      ],
+      "display_tags": [
+        "Reglas de Westgard"
+      ],
+      "front_html": "¿Que patron define la regla <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> R-4s</span>?",
+      "back_html": "Dos resultados de control en la misma ejecucion difieren en mas de 4 DE, lo que orienta a incremento del error aleatorio.",
+      "front_source": "¿Que patron define la regla [[rule:R-4s]]?",
+      "back_source": "Dos resultados de control en la misma ejecucion difieren en mas de 4 DE, lo que orienta a incremento del error aleatorio."
+    },
+    {
+      "id": "four-one-s-rule",
+      "card_type": "rule_identification",
+      "card_type_label": "Identificacion de regla",
+      "sort_order": 8,
+      "tags": [
+        "reglas-westgard"
+      ],
+      "display_tags": [
+        "Reglas de Westgard"
+      ],
+      "front_html": "¿Que suele sugerir la regla <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 4-1s</span>?",
+      "back_html": "Cuatro resultados consecutivos exceden 1 DE en el mismo lado de la media, lo que sugiere un desplazamiento persistente.",
+      "front_source": "¿Que suele sugerir la regla [[rule:4-1s]]?",
+      "back_source": "Cuatro resultados consecutivos exceden 1 DE en el mismo lado de la media, lo que sugiere un desplazamiento persistente."
+    },
+    {
+      "id": "ten-x-rule",
+      "card_type": "rule_identification",
+      "card_type_label": "Identificacion de regla",
+      "sort_order": 9,
+      "tags": [
+        "reglas-westgard"
+      ],
+      "display_tags": [
+        "Reglas de Westgard"
+      ],
+      "front_html": "¿Que significa la regla <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 10x</span>?",
+      "back_html": "Diez resultados consecutivos de control caen en el mismo lado de la media, senal fuerte de sesgo sistematico.",
+      "front_source": "¿Que significa la regla [[rule:10x]]?",
+      "back_source": "Diez resultados consecutivos de control caen en el mismo lado de la media, senal fuerte de sesgo sistematico."
+    },
+    {
+      "id": "warning-versus-rejection",
+      "card_type": "interpretation",
+      "card_type_label": "Interpretacion",
+      "sort_order": 10,
+      "tags": [
+        "toma-de-decision"
+      ],
+      "display_tags": [
+        "Toma de decision"
+      ],
+      "front_html": "¿Por que <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 1-2s</span> se trata distinto de <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 1-3s</span>?",
+      "back_html": "Porque <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 1-2s</span> es sensible pero menos especifica y obliga a revisar, mientras que <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 1-3s</span> es mas compatible con un problema analitico real.",
+      "front_source": "¿Por que [[rule:1-2s]] se trata distinto de [[rule:1-3s]]?",
+      "back_source": "Porque [[rule:1-2s]] es sensible pero menos especifica y obliga a revisar, mientras que [[rule:1-3s]] es mas compatible con un problema analitico real."
+    },
+    {
+      "id": "same-side-shift",
+      "card_type": "interpretation",
+      "card_type_label": "Interpretacion",
+      "sort_order": 11,
+      "tags": [
+        "error-sistematico"
+      ],
+      "display_tags": [
+        "Error sistematico"
+      ],
+      "front_html": "Si varios resultados de control suben y permanecen sobre la media, ¿que debe sospecharse primero?",
+      "back_html": "Un desplazamiento sistematico, como deriva de calibracion, cambio de lote de reactivo o ajuste del <span class=\"semantic semantic-instrument\"><span class=\"semantic-label\">Instrumento</span> instrumento</span>.",
+      "front_source": "Si varios resultados de control suben y permanecen sobre la media, ¿que debe sospecharse primero?",
+      "back_source": "Un desplazamiento sistematico, como deriva de calibracion, cambio de lote de reactivo o ajuste del [[instrument:instrumento]]."
+    },
+    {
+      "id": "wide-scatter",
+      "card_type": "interpretation",
+      "card_type_label": "Interpretacion",
+      "sort_order": 12,
+      "tags": [
+        "error-aleatorio"
+      ],
+      "display_tags": [
+        "Error aleatorio"
+      ],
+      "front_html": "Si una grafica muestra dispersion amplia arriba y abajo de la media sin direccion estable, ¿que tipo de error es mas probable?",
+      "back_html": "Error aleatorio, sobre todo si el patron activa <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> R-4s</span> o eventos aislados de <span class=\"semantic semantic-rule\"><span class=\"semantic-label\">Regla</span> 1-3s</span>.",
+      "front_source": "Si una grafica muestra dispersion amplia arriba y abajo de la media sin direccion estable, ¿que tipo de error es mas probable?",
+      "back_source": "Error aleatorio, sobre todo si el patron activa [[rule:R-4s]] o eventos aislados de [[rule:1-3s]]."
+    },
+    {
+      "id": "post-maintenance-review",
+      "card_type": "lab_context",
+      "card_type_label": "Contexto de laboratorio",
+      "sort_order": 13,
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "display_tags": [
+        "Flujo de laboratorio"
+      ],
+      "front_html": "¿Por que deben revisarse con cuidado los controles despues del mantenimiento del analizador?",
+      "back_html": "Porque el mantenimiento puede cambiar la linea basal del sistema y hacer visible un nuevo sesgo o un aumento de imprecision.",
+      "front_source": "¿Por que deben revisarse con cuidado los controles despues del mantenimiento del analizador?",
+      "back_source": "Porque el mantenimiento puede cambiar la linea basal del sistema y hacer visible un nuevo sesgo o un aumento de imprecision."
+    },
+    {
+      "id": "specimen-versus-control",
+      "card_type": "lab_context",
+      "card_type_label": "Contexto de laboratorio",
+      "sort_order": 14,
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "display_tags": [
+        "Flujo de laboratorio"
+      ],
+      "front_html": "¿Por que un resultado estable de <span class=\"semantic semantic-qc\"><span class=\"semantic-label\">Control de calidad</span> control de calidad</span> no garantiza que toda <span class=\"semantic semantic-specimen\"><span class=\"semantic-label\">Muestra</span> muestra de paciente</span> este libre de error?",
+      "back_html": "Porque el control de calidad vigila el sistema analitico, pero aun pueden existir problemas preanaliticos o propios de la muestra.",
+      "front_source": "¿Por que un resultado estable de [[qc:control de calidad]] no garantiza que toda [[specimen:muestra de paciente]] este libre de error?",
+      "back_source": "Porque el control de calidad vigila el sistema analitico, pero aun pueden existir problemas preanaliticos o propios de la muestra."
+    },
+    {
+      "id": "reagent-lot-change",
+      "card_type": "lab_context",
+      "card_type_label": "Contexto de laboratorio",
+      "sort_order": 15,
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "display_tags": [
+        "Flujo de laboratorio"
+      ],
+      "front_html": "Se introduce un nuevo lote de reactivo y ambos controles se desplazan hacia arriba. ¿Que explicacion es la mas plausible?",
+      "back_html": "Un efecto sistematico relacionado con el lote. Debe verificarse la calibracion, comparar con el lote previo y considerar <span class=\"semantic semantic-rejection\"><span class=\"semantic-label\">Rechazo</span> retener resultados</span> hasta explicar el cambio.",
+      "front_source": "Se introduce un nuevo lote de reactivo y ambos controles se desplazan hacia arriba. ¿Que explicacion es la mas plausible?",
+      "back_source": "Un efecto sistematico relacionado con el lote. Debe verificarse la calibracion, comparar con el lote previo y considerar [[rejection:retener resultados]] hasta explicar el cambio."
+    },
+    {
+      "id": "delta-check-context",
+      "card_type": "lab_context",
+      "card_type_label": "Contexto de laboratorio",
+      "sort_order": 16,
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "display_tags": [
+        "Flujo de laboratorio"
+      ],
+      "front_html": "¿Como complementan los delta checks al <span class=\"semantic semantic-qc\"><span class=\"semantic-label\">Control de calidad</span> control de calidad</span> interno?",
+      "back_html": "Ayudan a detectar cambios inesperados en datos de pacientes y agregan una comprobacion clinica que el control de calidad por si solo no aporta.",
+      "front_source": "¿Como complementan los delta checks al [[qc:control de calidad]] interno?",
+      "back_source": "Ayudan a detectar cambios inesperados en datos de pacientes y agregan una comprobacion clinica que el control de calidad por si solo no aporta."
+    },
+    {
+      "id": "multi-rule-rationale",
+      "card_type": "concept",
+      "card_type_label": "Concepto",
+      "sort_order": 17,
+      "tags": [
+        "reglas-westgard"
+      ],
+      "display_tags": [
+        "Reglas de Westgard"
+      ],
+      "front_html": "¿Por que las reglas de Westgard suelen usarse como estrategia <em>multirregla</em>?",
+      "back_html": "Porque combinarlas mejora el equilibrio entre deteccion de error y falso rechazo frente a distintos patrones de falla.",
+      "front_source": "¿Por que las reglas de Westgard suelen usarse como estrategia *multirregla*?",
+      "back_source": "Porque combinarlas mejora el equilibrio entre deteccion de error y falso rechazo frente a distintos patrones de falla."
+    },
+    {
+      "id": "reject-run-action",
+      "card_type": "interpretation",
+      "card_type_label": "Interpretacion",
+      "sort_order": 18,
+      "tags": [
+        "toma-de-decision"
+      ],
+      "display_tags": [
+        "Toma de decision"
+      ],
+      "front_html": "Si se activa una regla clara de <span class=\"semantic semantic-rejection\"><span class=\"semantic-label\">Rechazo</span> rechazo</span>, ¿cual es la accion inmediata mas segura?",
+      "back_html": "<strong>No liberar</strong> los resultados afectados hasta investigar la causa y restablecer un desempeno aceptable del control.",
+      "front_source": "Si se activa una regla clara de [[rejection:rechazo]], ¿cual es la accion inmediata mas segura?",
+      "back_source": "**No liberar** los resultados afectados hasta investigar la causa y restablecer un desempeno aceptable del control."
+    },
+    {
+      "id": "control-levels",
+      "card_type": "lab_context",
+      "card_type_label": "Contexto de laboratorio",
+      "sort_order": 19,
+      "tags": [
+        "flujo-laboratorio"
+      ],
+      "display_tags": [
+        "Flujo de laboratorio"
+      ],
+      "front_html": "¿Por que muchos laboratorios procesan mas de un nivel de control?",
+      "back_html": "Porque distintos niveles pueden revelar problemas dependientes de la concentracion que no se observan con un solo nivel.",
+      "front_source": "¿Por que muchos laboratorios procesan mas de un nivel de control?",
+      "back_source": "Porque distintos niveles pueden revelar problemas dependientes de la concentracion que no se observan con un solo nivel."
+    },
+    {
+      "id": "manual-review-note",
+      "card_type": "lab_context",
+      "card_type_label": "Contexto de laboratorio",
+      "sort_order": 20,
+      "tags": [
+        "documentacion"
+      ],
+      "display_tags": [
+        "Documentacion"
+      ],
+      "front_html": "¿Que debe documentarse despues de un evento importante de control de calidad?",
+      "back_html": "El patron observado, la causa probable, la accion correctiva y la decision sobre repetir o retener el reporte de pacientes.",
+      "front_source": "¿Que debe documentarse despues de un evento importante de control de calidad?",
+      "back_source": "El patron observado, la causa probable, la accion correctiva y la decision sobre repetir o retener el reporte de pacientes."
+    }
+  ]
+}

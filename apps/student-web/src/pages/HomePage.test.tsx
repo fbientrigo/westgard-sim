@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { HomePage } from "@/pages/HomePage";
 import * as studentApi from "@/shared/api/studentDataApi";
 
@@ -17,7 +18,11 @@ describe("HomePage states", () => {
 
   it("renders empty state when no experiments", async () => {
     vi.mocked(studentApi.listExperiments).mockResolvedValueOnce({ experiments: [] });
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>,
+    );
 
     await waitFor(() => {
       expect(screen.getByText(/Sin datos/i)).toBeInTheDocument();
@@ -26,7 +31,11 @@ describe("HomePage states", () => {
 
   it("renders error state when fetch fails", async () => {
     vi.mocked(studentApi.listExperiments).mockRejectedValueOnce(new Error("boom"));
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>,
+    );
 
     await waitFor(() => {
       expect(screen.getByText(/Error de carga/i)).toBeInTheDocument();

@@ -8,6 +8,7 @@ import type {
   LessonEducation,
   ScenarioEducation,
 } from "@/shared/types/educational";
+import type { FlashcardStudyDeck } from "@/shared/types/flashcards";
 
 export const experimentIndexSchema = z.object({
   experiments: z.array(
@@ -93,6 +94,35 @@ export const lessonEducationSchema = z.object({
 
 export const scenarioEducationMapSchema = z.record(scenarioEducationSchema);
 export const lessonEducationMapSchema = z.record(lessonEducationSchema);
+export const flashcardStudyDeckSchema = z.object({
+  deck_id: z.string().min(1),
+  format_version: z.string().min(1),
+  metadata: z.object({
+    title: z.string().min(1),
+    subtitle: z.string(),
+    language: z.string().min(1),
+    audience: z.string().min(1),
+    description: z.string(),
+    author: z.string().min(1),
+    tags: z.array(z.string()),
+    display_tags: z.array(z.string()),
+    notes: z.string().nullable(),
+  }),
+  cards: z.array(
+    z.object({
+      id: z.string().min(1),
+      card_type: z.string().min(1),
+      card_type_label: z.string().min(1),
+      sort_order: z.number().int().nullable(),
+      tags: z.array(z.string()),
+      display_tags: z.array(z.string()),
+      front_html: z.string().min(1),
+      back_html: z.string().min(1),
+      front_source: z.string().min(1),
+      back_source: z.string().min(1),
+    }),
+  ),
+});
 
 export function parseExperimentIndex(payload: unknown): ExperimentIndexPayload {
   return experimentIndexSchema.parse(payload);
@@ -112,4 +142,8 @@ export function parseScenarioEducationMap(payload: unknown): Record<string, Scen
 
 export function parseLessonEducationMap(payload: unknown): Record<string, LessonEducation> {
   return lessonEducationMapSchema.parse(payload);
+}
+
+export function parseFlashcardStudyDeck(payload: unknown): FlashcardStudyDeck {
+  return flashcardStudyDeckSchema.parse(payload);
 }

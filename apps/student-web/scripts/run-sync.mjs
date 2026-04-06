@@ -10,6 +10,8 @@ const repoRoot = path.resolve(__dirname, "../../..");
 const datasetSource = path.resolve(repoRoot, "outputs/web_data");
 const datasetTarget = path.resolve(repoRoot, "apps/student-web/public/web_data");
 const educationalTarget = path.resolve(repoRoot, "apps/student-web/public/educational");
+const flashcardsSource = path.resolve(repoRoot, "outputs/flashcards");
+const flashcardsTarget = path.resolve(repoRoot, "apps/student-web/public/flashcards");
 const scenariosSource = path.resolve(repoRoot, "content/scenarios.json");
 const lessonsSource = path.resolve(repoRoot, "content/lessons.json");
 
@@ -61,5 +63,21 @@ async function syncEducational() {
   );
 }
 
+async function syncFlashcards() {
+  if (!existsSync(flashcardsSource)) {
+    console.log("[sync] flashcards skipped: outputs/flashcards not found");
+    return;
+  }
+
+  if (cleanTarget) {
+    await fs.rm(flashcardsTarget, { recursive: true, force: true });
+  }
+
+  await fs.mkdir(path.dirname(flashcardsTarget), { recursive: true });
+  await fs.cp(flashcardsSource, flashcardsTarget, { recursive: true, force: true });
+  console.log(`[sync] flashcards copied: ${flashcardsSource} -> ${flashcardsTarget}`);
+}
+
 await ensureDataset();
 await syncEducational();
+await syncFlashcards();
