@@ -55,6 +55,46 @@ body {
   margin-top: 0.9rem;
 }
 
+.auth-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.auth-label {
+  display: grid;
+  gap: 0.28rem;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.auth-input {
+  min-width: 220px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
+  color: var(--text-main);
+  font: inherit;
+}
+
+.auth-status,
+.auth-error {
+  margin: 0.9rem 0 0;
+  font-size: 0.88rem;
+}
+
+.auth-status {
+  color: var(--text-soft);
+}
+
+.auth-error {
+  color: var(--danger);
+  font-weight: 600;
+}
+
 .brand-link {
   color: var(--accent-strong);
   text-decoration: none;
@@ -532,8 +572,14 @@ body {
   }
 
   .app-nav,
+  .auth-panel,
   .flashcard-study-actions,
   .flashcard-study-header {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .auth-input {
+    min-width: 0;
   }
 }

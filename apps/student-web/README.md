@@ -38,9 +38,21 @@ npm run sync:data
 npm run dev
 ```
 
+Para Vercel, usa:
+
+```powershell
+cd apps/student-web
+npm run build:vercel
+```
+
+Ese comando exporta datos estaticos desde `content/experiment_catalog.json`, exporta el deck de
+flashcards, sincroniza `public/web_data`, `public/educational` y `public/flashcards`, y luego ejecuta
+`vite build`.
+
 ## Flashcards interactivas
 
-La ruta `/#/flashcards` muestra un MVP de estudio con tres pilas y persistencia local.
+La ruta `/#/flashcards` muestra un MVP de estudio con tres pilas. Sin Supabase usa
+`localStorage`; con una sesion autenticada sincroniza el progreso a Supabase.
 
 Antes de abrirla:
 
@@ -76,6 +88,9 @@ src/
 
 La app valida contratos en runtime con `zod` antes de renderizar.
 
+Estos archivos siguen siendo assets estaticos. Escenarios, decks, contenido educativo y datos
+generados no se leen desde Supabase.
+
 ## Contenido educativo
 
 Integracion no invasiva y opcional via adapter:
@@ -94,3 +109,41 @@ El workflow `.github/workflows/student-pages.yml`:
 3. Sincroniza assets al frontend.
 4. Compila Vite con base configurable.
 5. Publica `apps/student-web/dist` en GitHub Pages.
+
+## Deploy a Vercel
+
+Configura el proyecto Vercel con:
+
+- Root Directory: `apps/student-web`
+- Install Command: `npm install`
+- Build Command: `npm run build:vercel`
+- Output Directory: `dist`
+
+El build de Vercel necesita Python disponible para ejecutar los scripts de export estatico. El
+build no requiere Supabase para compilar ni para servir contenido educativo.
+
+Variables opcionales de entorno:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+Si faltan, la app entra en modo local y guarda progreso en `localStorage`. No uses ni expongas una
+service-role key en el frontend.
+
+## Supabase
+
+Supabase se usa solo para identidad y progreso de flashcards. Ejecuta manualmente:
+
+- `supabase/001_identity_and_progress.sql`
+
+Ese SQL crea:
+
+- `public.westgard_profiles`
+- `public.westgard_flashcard_progress`
+- politicas RLS para que cada usuario lea, inserte, actualice y elimine solo sus propias filas
+
+No se agrego tabla de progreso de escenarios porque la app actual no tiene un estado de escenario
+editable o persistible claro; las paginas de escenarios son lectura de JSON estatico.
+
+Para magic links, habilita Email Auth en Supabase y agrega la URL de Vercel a los redirect URLs del
+proyecto Supabase.

@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
+import { AuthPanel } from "@/features/auth/AuthPanel";
 
 export function AppLayout(): JSX.Element {
   return (
@@ -19,6 +20,7 @@ export function AppLayout(): JSX.Element {
               Flashcards
             </Link>
           </nav>
+          <AuthPanel />
         </div>
       </header>
       <main className="app-main">

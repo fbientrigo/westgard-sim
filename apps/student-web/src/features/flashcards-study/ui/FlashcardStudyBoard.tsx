@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "@/features/auth/AuthProvider";
 import {
   applyStudyRating,
   getDueCardIds,
@@ -7,28 +8,8 @@ import {
   normalizeStudyProgress,
   type StudyProgress,
 } from "@/features/flashcards-study/model/session";
+import { createHybridProgressRepository } from "@/features/flashcards-study/model/progressRepository";
 import type { FlashcardStudyDeck } from "@/shared/types/flashcards";
-
-const STORAGE_PREFIX = "westgard.flashcards.progress";
-
-function storageKey(deckId: string): string {
-  return `${STORAGE_PREFIX}.${deckId}`;
-}
-
-function readProgress(deckId: string): StudyProgress | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-  const raw = window.localStorage.getItem(storageKey(deckId));
-  if (!raw) {
-    return null;
-  }
-  try {
-    return JSON.parse(raw) as StudyProgress;
-  } catch {
-    return null;
-  }
-}
 
 function formatDueDate(value: string | null): string {
   if (!value) {
@@ -41,19 +22,38 @@ function formatDueDate(value: string | null): string {
 }
 
 export function FlashcardStudyBoard({ deck }: { deck: FlashcardStudyDeck }): JSX.Element {
+  const { user } = useAuth();
+  const repository = useMemo(() => createHybridProgressRepository(user?.id ?? null), [user?.id]);
   const [progress, setProgress] = useState<StudyProgress>(() =>
-    normalizeStudyProgress(deck, readProgress(deck.deck_id), new Date().toISOString()),
+    normalizeStudyProgress(deck, null, new Date().toISOString()),
   );
+  const [progressReady, setProgressReady] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
-    window.localStorage.setItem(storageKey(deck.deck_id), JSON.stringify(progress));
-  }, [deck.deck_id, progress]);
+    let active = true;
+    setProgressReady(false);
+    setRevealed(false);
+
+    void repository.loadFlashcardProgress(deck.deck_id).then((stored) => {
+      if (!active) {
+        return;
+      }
+      setProgress(normalizeStudyProgress(deck, stored, new Date().toISOString()));
+      setProgressReady(true);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [deck, repository]);
 
   useEffect(() => {
-    setProgress(normalizeStudyProgress(deck, readProgress(deck.deck_id), new Date().toISOString()));
-    setRevealed(false);
-  }, [deck]);
+    if (!progressReady) {
+      return;
+    }
+    void repository.saveFlashcardProgress(deck.deck_id, progress);
+  }, [deck.deck_id, progress, progressReady, repository]);
 
   const nowIso = new Date().toISOString();
   const dueCardIds = getDueCardIds(deck, progress, nowIso);
@@ -74,10 +74,15 @@ export function FlashcardStudyBoard({ deck }: { deck: FlashcardStudyDeck }): JSX
 
   function handleReset() {
     const next = normalizeStudyProgress(deck, null, new Date().toISOString());
-    window.localStorage.removeItem(storageKey(deck.deck_id));
+    void repository.clearFlashcardProgress(deck.deck_id);
     setProgress(next);
     setRevealed(false);
   }
+
+  const progressModeLabel =
+    repository.mode === "supabase"
+      ? "Progreso sincronizado con Supabase."
+      : "Progreso guardado en este navegador.";
 
   return (
     <div className="flashcards-layout">
@@ -90,8 +95,9 @@ export function FlashcardStudyBoard({ deck }: { deck: FlashcardStudyDeck }): JSX
         <div className="card-grid flashcards-meta-grid">
           <article className="info-card">
             <h3>Estado de sesion</h3>
-            <p>{reviewedCount} tarjetas vistas en este navegador.</p>
+            <p>{reviewedCount} tarjetas vistas.</p>
             <p>{dueCardIds.length} tarjetas disponibles ahora.</p>
+            <p>{progressReady ? progressModeLabel : "Cargando progreso..."}</p>
           </article>
           <article className="info-card">
             <h3>Regla del MVP</h3>
@@ -105,7 +111,7 @@ export function FlashcardStudyBoard({ deck }: { deck: FlashcardStudyDeck }): JSX
             <h3>Proximo repaso</h3>
             <p>{formatDueDate(getNextDueAt(progress))}</p>
             <button className="button-secondary" onClick={handleReset} type="button">
-              Reiniciar progreso local
+              Reiniciar progreso
             </button>
           </article>
         </div>
@@ -138,7 +144,7 @@ export function FlashcardStudyBoard({ deck }: { deck: FlashcardStudyDeck }): JSX
             <h3>No hay tarjetas pendientes ahora</h3>
             <p>
               Ya no quedan tarjetas con revision inmediata. Puedes volver mas tarde o reiniciar el
-              progreso local para repetir la sesion.
+              progreso para repetir la sesion.
             </p>
           </article>
         )}

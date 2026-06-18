@@ -239,6 +239,26 @@ URL final esperada para estudiantes:
 - `https://<org-o-usuario>.github.io/<repo>/`
 - si el repo es `<org-o-usuario>.github.io`, la URL queda `https://<org-o-usuario>.github.io/`
 
+### Build y deploy en Vercel
+
+El frontend tambien puede desplegarse en Vercel sin mover contenido educativo a Supabase.
+
+Settings:
+
+- Root Directory: `apps/student-web`
+- Install Command: `npm install`
+- Build Command: `npm run build:vercel`
+- Output Directory: `dist`
+
+Variables opcionales:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+Si faltan, la app funciona igual con datos estaticos y progreso en `localStorage`. Con esas variables,
+aparece login por magic link y el progreso de flashcards se sincroniza en Supabase. El SQL manual esta
+en `apps/student-web/supabase/001_identity_and_progress.sql`.
+
 ## 6. Guia para crear experimentos
 
 Para entender cada campo del catalogo y editarlo correctamente, revisa:
