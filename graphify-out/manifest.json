@@ -1,0 +1,667 @@
+{
+  "activate.ps1": {
+    "mtime": 1781884252.0068803,
+    "ast_hash": "0d6a3f6e2ef8246527001965f3841574",
+    "semantic_hash": ""
+  },
+  "apps/student-web/package.json": {
+    "mtime": 1781884252.0091586,
+    "ast_hash": "c4566825789909ae92acee55133b39cc",
+    "semantic_hash": ""
+  },
+  "apps/student-web/public/flashcards/westgard_qc_basics/manifest.json": {
+    "mtime": 1781884252.013322,
+    "ast_hash": "f88a0233d362db1140b93ac474b07f62",
+    "semantic_hash": ""
+  },
+  "apps/student-web/public/flashcards/westgard_qc_basics/study_deck.json": {
+    "mtime": 1781884252.013322,
+    "ast_hash": "94b9d44202750bbe1bbbd0f3c0f21422",
+    "semantic_hash": ""
+  },
+  "apps/student-web/scripts/prepare-static-data.mjs": {
+    "mtime": 1781884252.013322,
+    "ast_hash": "77d21ddaf56f2187688ea89c5fd0e105",
+    "semantic_hash": ""
+  },
+  "apps/student-web/scripts/run-sync.mjs": {
+    "mtime": 1781884252.0146582,
+    "ast_hash": "f55095c231a78cb0cfd3f4ca31ba5af5",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/app/App.tsx": {
+    "mtime": 1781884252.0148826,
+    "ast_hash": "d176465eb838f6758f79be18007ee697",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/app/AppLayout.tsx": {
+    "mtime": 1781884252.015425,
+    "ast_hash": "8f57377df40257c19c06f2491c72e49c",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/app/router.tsx": {
+    "mtime": 1781884252.015425,
+    "ast_hash": "76f76adc8ee814be1d09cc85195591ba",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/entities/experiment/model/experiment.ts": {
+    "mtime": 1781884252.0157864,
+    "ast_hash": "03aff93d8bcddc9a87ae0b022243b269",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/entities/rule-result/model/ruleResult.ts": {
+    "mtime": 1781884252.0164456,
+    "ast_hash": "5509fa1d47919aeac83772046ea6ff0e",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/entities/scenario/model/scenario.ts": {
+    "mtime": 1781884252.0169058,
+    "ast_hash": "3090869c4854ff1a299a41068859d55b",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/auth/AuthPanel.tsx": {
+    "mtime": 1781884252.0175,
+    "ast_hash": "ebaf64a5badef92ae3ef528aabb64d36",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/auth/AuthProvider.tsx": {
+    "mtime": 1781884252.017934,
+    "ast_hash": "b5af5f30e8a4a91e185a8fe63bc1a064",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/chart-viewer/model/triggerTooltip.test.ts": {
+    "mtime": 1781884252.0182993,
+    "ast_hash": "80bdf4a029bc912221f4583a831f27fe",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/chart-viewer/model/triggerTooltip.ts": {
+    "mtime": 1781884252.0187883,
+    "ast_hash": "7638872b970155c4ceaf56de7db491c1",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/chart-viewer/ui/LeveyJenningsChart.tsx": {
+    "mtime": 1781884252.0187883,
+    "ast_hash": "15ba3d11c1b04ca5ae73d19c265ab0bc",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/experiment-detail/ui/ExperimentOverview.tsx": {
+    "mtime": 1781884252.0194843,
+    "ast_hash": "162a72310f9981248b4bb331f60aae80",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/experiment-list/ui/ExperimentList.tsx": {
+    "mtime": 1781884252.0202608,
+    "ast_hash": "9785b820138f8b372d43067f11ccb781",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/flashcards-study/model/progressRepository.test.ts": {
+    "mtime": 1781884252.0208087,
+    "ast_hash": "20f9a8be7406a069576cb46af622ba30",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/flashcards-study/model/progressRepository.ts": {
+    "mtime": 1781884252.0210981,
+    "ast_hash": "abe25999479f99c6f1e5ab3bcf41d35b",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/flashcards-study/model/session.test.ts": {
+    "mtime": 1781884252.0210981,
+    "ast_hash": "289764768f781485f9bfc691bc70146a",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/flashcards-study/model/session.ts": {
+    "mtime": 1781884252.0210981,
+    "ast_hash": "e17252d15568f13b09f248cfbcbecea4",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/flashcards-study/ui/FlashcardStudyBoard.tsx": {
+    "mtime": 1781884252.0210981,
+    "ast_hash": "fd761caadfc6a96df7b8f59a0e23081c",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/features/scenario-viewer/ui/ScenarioViewer.tsx": {
+    "mtime": 1781884252.0223324,
+    "ast_hash": "6715bcb4525297ce82cf441a6e1fd2ff",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/main.tsx": {
+    "mtime": 1781884252.0223324,
+    "ast_hash": "b0d62af69ba125ce49c57839ab56969e",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/pages/ExperimentPage.tsx": {
+    "mtime": 1781884252.0223324,
+    "ast_hash": "bc37267a6f089f867ec54e1a5c3351ee",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/pages/FlashcardsPage.tsx": {
+    "mtime": 1781884252.0235698,
+    "ast_hash": "bc0ef8d2665781f1bad9c2f1a2cd2a9d",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/pages/HomePage.test.tsx": {
+    "mtime": 1781884252.0235698,
+    "ast_hash": "782916bbef38d4faa180e2e43c7c456a",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/pages/HomePage.tsx": {
+    "mtime": 1781884252.0235698,
+    "ast_hash": "91e8d8ec5d97eeb400aa0713f80ed747",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/pages/NotFoundPage.tsx": {
+    "mtime": 1781884252.0235698,
+    "ast_hash": "0104ba42e8a3c227bcbfcc20a1a61669",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/pages/ScenarioPage.tsx": {
+    "mtime": 1781884252.0235698,
+    "ast_hash": "bc607de03c32dbd56116dfc8e4e05949",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/api/contracts.test.ts": {
+    "mtime": 1781884252.0245688,
+    "ast_hash": "b4161d9c3880d6c22857ccf51f1cbe8f",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/api/contracts.ts": {
+    "mtime": 1781884252.0250506,
+    "ast_hash": "ceb565b5e5437f662fbec32a8496af0a",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/api/educationalAdapter.ts": {
+    "mtime": 1781884252.0250506,
+    "ast_hash": "b6441dd6a5721bb969c577ad93eb5ded",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/api/http.ts": {
+    "mtime": 1781884252.0250506,
+    "ast_hash": "bb94250fe41b029c130fb0d63e319ec1",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/api/studentDataApi.ts": {
+    "mtime": 1781884252.0250506,
+    "ast_hash": "c2bb54fbd35ceda08eaf17ed1191941a",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/config/localization.ts": {
+    "mtime": 1781884252.0250506,
+    "ast_hash": "a8e7a32f4581c41d81bdc5f35bec7fef",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/config/paths.test.ts": {
+    "mtime": 1781884252.026541,
+    "ast_hash": "5726fe90646a5c33558bdf36583d7e12",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/config/paths.ts": {
+    "mtime": 1781884252.026541,
+    "ast_hash": "8d3d90b053d94dc9c7f58af367c57edd",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/lib/format.ts": {
+    "mtime": 1781884252.026541,
+    "ast_hash": "22fe7a059386e5a7ad87c0f7afe5802a",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/lib/useAsyncResource.ts": {
+    "mtime": 1781884252.026943,
+    "ast_hash": "b74d4e3fa45dcda6aec80d3e6ab42bd6",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/supabase/client.ts": {
+    "mtime": 1781884252.026943,
+    "ast_hash": "d2fba9992d3f8e0a609b3e4a1908c3c4",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/types/educational.ts": {
+    "mtime": 1781884252.026943,
+    "ast_hash": "41f04cf9294c4317e5c4d34f9bcd2444",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/types/flashcards.ts": {
+    "mtime": 1781884252.0278933,
+    "ast_hash": "7ddfec7d8ba1ead02ce3b88db2ecdec8",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/types/webData.ts": {
+    "mtime": 1781884252.0278933,
+    "ast_hash": "6eded72ec9030b15bfcb296e9d7a1d78",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/ui/AsyncStates.tsx": {
+    "mtime": 1781884252.0278933,
+    "ast_hash": "1ee6b716db6303aed6b3f8071b5f0432",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/shared/ui/StatGrid.tsx": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "0ac9198a8c4574ffe09e18a5e4402e09",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/test/setup.ts": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "3709e3aa95abf0544678f0f2d9b46702",
+    "semantic_hash": ""
+  },
+  "apps/student-web/src/vite-env.d.ts": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "1157e832b87f14bd1c1cbfe5df3c3980",
+    "semantic_hash": ""
+  },
+  "apps/student-web/supabase/001_identity_and_progress.sql": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "0911449942798ed7e1333254ae9c4677",
+    "semantic_hash": ""
+  },
+  "apps/student-web/tsconfig.json": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "da2cdd9202b00ad155c02aeaa3b7ac84",
+    "semantic_hash": ""
+  },
+  "apps/student-web/tsconfig.node.json": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "55fee1c751a36790aaab274986b7a5ff",
+    "semantic_hash": ""
+  },
+  "apps/student-web/vite.config.ts": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "ef2de380efa8da2243399d433ddc9225",
+    "semantic_hash": ""
+  },
+  "apps/student-web/vitest.config.ts": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "52e8ec19ca38eda01cdc89f1cafa2af8",
+    "semantic_hash": ""
+  },
+  "content/authoring_adapter.py": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "e5bb59298ac3fccfd866d1655f6ed00e",
+    "semantic_hash": ""
+  },
+  "content/authoring_catalog.example.json": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "ca30459d329ae6dfd780bc0320edb2b6",
+    "semantic_hash": ""
+  },
+  "content/authoring_catalog.schema.json": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "f7c04d8c5e725e3bfb98ece2d482e90b",
+    "semantic_hash": ""
+  },
+  "content/authoring_validation.py": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "29aaab38639f99411f6dff296dcc8822",
+    "semantic_hash": ""
+  },
+  "content/experiment_catalog.generated.json": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "adf32e6593e364b08eacc9b27e484485",
+    "semantic_hash": ""
+  },
+  "content/experiment_catalog.json": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "47fe5e0c8aa1e92958e140d83c3c9fd3",
+    "semantic_hash": ""
+  },
+  "content/flashcards/flashcard_deck.schema.json": {
+    "mtime": 1781884252.0340376,
+    "ast_hash": "18677dc661083f27fff97ab2eda62f67",
+    "semantic_hash": ""
+  },
+  "content/flashcards/westgard_qc_basics.deck.json": {
+    "mtime": 1781884252.0340376,
+    "ast_hash": "174a3d0dcc9d367edb449dfc979952a1",
+    "semantic_hash": ""
+  },
+  "content/lessons.json": {
+    "mtime": 1781884252.0340376,
+    "ast_hash": "7d53954ccf999377464989242c2794e6",
+    "semantic_hash": ""
+  },
+  "content/load_content.py": {
+    "mtime": 1781884252.0340376,
+    "ast_hash": "a20c81f77554b32b95965662f5fc4c51",
+    "semantic_hash": ""
+  },
+  "content/scenarios.json": {
+    "mtime": 1781884252.0340376,
+    "ast_hash": "e174190e7cf54639d397f11625d845ce",
+    "semantic_hash": ""
+  },
+  "content/validate_content.py": {
+    "mtime": 1781884252.0340376,
+    "ast_hash": "cd26a81d57b94c76d703e8885abfdb7e",
+    "semantic_hash": ""
+  },
+  "pyproject.toml": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "11dbe12ff94830a9f9e6366abaf67b81",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/__init__.py": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "6ba64b8f1e798b9b9bf4bf2fefcc124d",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/config.py": {
+    "mtime": 1781884252.0385613,
+    "ast_hash": "a77d52852355328b5ae1a06242835d65",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/export.py": {
+    "mtime": 1781884252.0385613,
+    "ast_hash": "d5626289e17e4cfd3cdbfd96188e501b",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/flashcards/__init__.py": {
+    "mtime": 1781884252.0385613,
+    "ast_hash": "1c3c7316525fc04c761ef68148d111b2",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/flashcards/export.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "d8f556870fd884420f877c9c863dcb18",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/flashcards/io.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "76ea91cfb6557239d98610a47e6e1ba0",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/flashcards/localization.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "e7ed7e6f12057ed10ef48664f41bf2c1",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/flashcards/markup.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "9cd55c0898eb3a319390e909e0ad0771",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/flashcards/models.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "8a3799010fdf18c91b5eb7736bf4745d",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/flashcards/theme.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "37730376edf52085523a337524fcff19",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/flashcards/validation.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "bb0de9abbc307590cb9a5b6a92161c3b",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/metrics.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "38c1743a8aaa1e4fed2dc4b23478c28d",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/models.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "d90c2b828f769778dd3b98c318b4b92e",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/plots.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "f0eb74f7e69eca0c6a49e7516a30d5b6",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/rules.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "0afd3d262f26481f4c291aaf9631cbd3",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/scenarios.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "7ca26cd69639ca9620472ba57224440e",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/simulate.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "75bb7a1ae7e259f313768b370605afcc",
+    "semantic_hash": ""
+  },
+  "qc_lab_simulator/web_export.py": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "ed33dc658d1fdedc28bb20484691934c",
+    "semantic_hash": ""
+  },
+  "run_authoring_ui.ps1": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "cf0429f62a8cdac156001ca03511ff3a",
+    "semantic_hash": ""
+  },
+  "scripts/authoring_mvp.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "1361931acf8489565c30dcc7b99606b9",
+    "semantic_hash": ""
+  },
+  "scripts/authoring_ops.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "d5849053c0613616fbea03b8f14fb5e0",
+    "semantic_hash": ""
+  },
+  "scripts/build_experiment_catalog.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "e17dc26c0d61bae4b4c067d702e10027",
+    "semantic_hash": ""
+  },
+  "scripts/export_flashcards.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "6adb758a556160aadce0defde24fa2d6",
+    "semantic_hash": ""
+  },
+  "scripts/export_web_data.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "6bc04c23b52c38a50b8a954759a0f9da",
+    "semantic_hash": ""
+  },
+  "scripts/run_demo.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "6ba5002e0bb9f9b0b6665f8639c76ee5",
+    "semantic_hash": ""
+  },
+  "scripts/smoke_authoring_flow.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "a9791a5ce0764510c0007ec918ebe0e0",
+    "semantic_hash": ""
+  },
+  "scripts/sync_student_web_assets.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "2d30a5782422c91756ac008f07aeaadc",
+    "semantic_hash": ""
+  },
+  "student_web_ops.ps1": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "37eb09c3e33969d1b37532649022bafe",
+    "semantic_hash": ""
+  },
+  "tests/conftest.py": {
+    "mtime": 1781884252.0411587,
+    "ast_hash": "06aef40098fb22c2b7d93e536d29c0ff",
+    "semantic_hash": ""
+  },
+  "tests/test_authoring_adapter.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "701a60d5b4a381ad79028d65ce50bf85",
+    "semantic_hash": ""
+  },
+  "tests/test_authoring_ops.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "c0145ae366f4ad29df719715fba4eb98",
+    "semantic_hash": ""
+  },
+  "tests/test_authoring_smoke_flow.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "41077f787c982f47716fc569ef1e0581",
+    "semantic_hash": ""
+  },
+  "tests/test_authoring_validation.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "ac31eb7ab5ce6265d8a3084600abc9a1",
+    "semantic_hash": ""
+  },
+  "tests/test_export_web_data_script.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "24b571384d6813cb8348135be3679506",
+    "semantic_hash": ""
+  },
+  "tests/test_flashcards_export.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "75641d5002b61cdd25468a926b7bef39",
+    "semantic_hash": ""
+  },
+  "tests/test_flashcards_markup.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "c2371c403f23a20bda998f26d21c7928",
+    "semantic_hash": ""
+  },
+  "tests/test_flashcards_validation.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "144202114ac23b31ceb9f4c111f66789",
+    "semantic_hash": ""
+  },
+  "tests/test_rules.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "34d5579158a982b80efc4f28323e6a78",
+    "semantic_hash": ""
+  },
+  "tests/test_scenarios.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "41fda0177e8c090620ddb95dec4c54a6",
+    "semantic_hash": ""
+  },
+  "tests/test_simulate.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "3a5280c460da6fd13cf4d43ad0e3d745",
+    "semantic_hash": ""
+  },
+  "tests/test_web_export.py": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "c3117d5e8cf22e11164a36d910c9ce25",
+    "semantic_hash": ""
+  },
+  "westgard_ops.ps1": {
+    "mtime": 1781884252.0460021,
+    "ast_hash": "9aef8480ee635220dacaaf8adb3ec034",
+    "semantic_hash": ""
+  },
+  ".github/workflows/student-pages.yml": {
+    "mtime": 1781884252.0068803,
+    "ast_hash": "635afb2e25179a0887be49e6b470a90f",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1781884252.0068803,
+    "ast_hash": "0794926ff40e303bd31c8af1a48f4343",
+    "semantic_hash": ""
+  },
+  "apps/student-web/README.md": {
+    "mtime": 1781884252.0087836,
+    "ast_hash": "92e665a6201664c75689ffb08d4d41df",
+    "semantic_hash": ""
+  },
+  "apps/student-web/index.html": {
+    "mtime": 1781884252.0091164,
+    "ast_hash": "2e99d17b5e38355c85891785228f64d0",
+    "semantic_hash": ""
+  },
+  "apps/student-web/public/flashcards/westgard_qc_basics/preview.html": {
+    "mtime": 1781884252.013322,
+    "ast_hash": "24baab4d6963562085fa61b9758c7430",
+    "semantic_hash": ""
+  },
+  "content/ARCHITECTURE.md": {
+    "mtime": 1781884252.0285382,
+    "ast_hash": "074ae042bac564bfaec7500689080c8c",
+    "semantic_hash": ""
+  },
+  "content/IMPLEMENTATION_SUMMARY.md": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "3416b71e663831b8fccecb0f474d5327",
+    "semantic_hash": ""
+  },
+  "content/INDEX.md": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "02013088311d0a87a75a937be13d12f4",
+    "semantic_hash": ""
+  },
+  "content/QUICK_REFERENCE.md": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "b9c74984799ffe9ac6ea1b424376aeae",
+    "semantic_hash": ""
+  },
+  "content/README.md": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "38a9c243967bb9c2304b63868bdd69c8",
+    "semantic_hash": ""
+  },
+  "content/flashcards/README.md": {
+    "mtime": 1781884252.0291586,
+    "ast_hash": "3010b9b581911fb3da31e852b8d293ff",
+    "semantic_hash": ""
+  },
+  "docs/AUTHORING_MVP_GUIDE.md": {
+    "mtime": 1781884252.0340376,
+    "ast_hash": "157a373175d93854a2d0ef8be8d0a156",
+    "semantic_hash": ""
+  },
+  "docs/AUTHORING_MVP_TUTORIAL.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "4974884f270eab16996341488f679b7d",
+    "semantic_hash": ""
+  },
+  "docs/BEA_PILOT_CHECKLIST.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "25e6df128f8bfea92f9590863ac2c352",
+    "semantic_hash": ""
+  },
+  "docs/FLASHCARDS_GUIDE.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "753f875830a948c6794fd2a14d3f7d70",
+    "semantic_hash": ""
+  },
+  "docs/PILOT_QUICKSTART_5_MIN.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "ab86ec38f1a64d4b39cf6ae1737aeb9b",
+    "semantic_hash": ""
+  },
+  "docs/PILOT_RECOVERY_GUIDE.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "94e26884b68406c4522a4719c637367b",
+    "semantic_hash": ""
+  },
+  "docs/PILOT_TROUBLESHOOTING.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "aa73b2fd7dc213de4e59f1dcee27f2f1",
+    "semantic_hash": ""
+  },
+  "docs/README.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "0c66b140a8f0ae9cf9ab2133d93e7c91",
+    "semantic_hash": ""
+  },
+  "docs/STUDENT_FRONTEND_GUIDE.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "310395ba7c1173725bceb410809d567a",
+    "semantic_hash": ""
+  },
+  "docs/STUDENT_FRONTEND_PLAN.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "9bada38b0556b01ffeb63e90263617c4",
+    "semantic_hash": ""
+  },
+  "docs/crear_experimento.md": {
+    "mtime": 1781884252.0358422,
+    "ast_hash": "913ba131d555aa521ee9a734973a0768",
+    "semantic_hash": ""
+  },
+  "requirements.txt": {
+    "mtime": 1781884252.0390668,
+    "ast_hash": "db3df2da3fa72e5b3b771f2c2f9f52c7",
+    "semantic_hash": ""
+  }
+}
