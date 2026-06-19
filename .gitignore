@@ -38,6 +38,9 @@ apps/student-web/public/educational/
 # Local agent/runtime scratch
 .sisyphus/
 
+# Graphify knowledge-graph cache (rebuildable AST cache, not the graph itself)
+graphify-out/cache/
+
 # OS
 .DS_Store
 Thumbs.db
