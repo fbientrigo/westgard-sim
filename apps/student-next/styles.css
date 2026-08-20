@@ -331,14 +331,14 @@ h3 { font-size: 1.05rem; margin-bottom: 8px; }
 .card-group li { padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
 
 .review-shell { width: min(100%, 680px); margin: 28px auto 0; }
-.review-card { width: 100%; min-height: 430px; padding: 0; border: 0; background: transparent; perspective: 1200px; cursor: pointer; touch-action: pan-y; border-radius: 28px; text-align: left; }
+.review-card { display: block; width: 100%; min-height: 430px; padding: 0; border: 0; background: transparent; perspective: 1200px; cursor: pointer; touch-action: pan-y; border-radius: 28px; text-align: left; }
 .review-card:disabled { cursor: default; }
-.review-card-inner { position: relative; min-height: 430px; transform-style: preserve-3d; transition: transform 360ms cubic-bezier(.2,.7,.2,1); border-radius: 28px; box-shadow: var(--shadow); }
+.review-card-inner { display: block; position: relative; width: 100%; min-height: 430px; transform-style: preserve-3d; transition: transform 360ms cubic-bezier(.2,.7,.2,1); border-radius: 28px; box-shadow: var(--shadow); }
 .review-card.revealed .review-card-inner { transform: rotateY(180deg); }
-.card-face { position: absolute; inset: 0; min-height: 430px; padding: clamp(28px, 6vw, 50px); border: 1px solid var(--line); border-radius: 28px; background: var(--surface); backface-visibility: hidden; display: flex; flex-direction: column; }
+.card-face { position: absolute; inset: 0; width: 100%; min-height: 430px; padding: clamp(28px, 6vw, 50px); border: 1px solid var(--line); border-radius: 28px; background: var(--surface); backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; }
 .card-back { transform: rotateY(180deg); background: var(--text); color: white; border-color: var(--text); }
 .card-back .card-kicker { color: #aab8ff; }
-.card-content { margin: auto 0; font-size: clamp(1.35rem, 3vw, 2.15rem); line-height: 1.35; font-weight: 680; letter-spacing: -0.025em; }
+.card-content { margin: auto 0; min-width: 0; overflow-wrap: normal; word-break: normal; font-size: clamp(1.35rem, 3vw, 2.15rem); line-height: 1.35; font-weight: 680; letter-spacing: -0.025em; }
 .card-content .term,
 .semantic { color: var(--brand); }
 .card-back .card-content .term,
@@ -397,10 +397,13 @@ h3 { font-size: 1.05rem; margin-bottom: 8px; }
   body[data-view="practice"] .run-button { min-width: 30px; padding: 0; }
 
   body[data-view="cards"] .cards-view { padding: 16px 16px max(22px, env(safe-area-inset-bottom)); min-height: calc(100dvh - 56px); display: grid; align-items: center; }
-  body[data-view="cards"] .review-shell { margin: 0 auto; }
+  body[data-view="cards"] .review-shell { width: min(92vw, 380px); max-width: 100%; margin: 0 auto; }
   body[data-view="cards"] .review-card,
   body[data-view="cards"] .review-card-inner,
   body[data-view="cards"] .card-face { min-height: min(66dvh, 560px); }
+  body[data-view="cards"] .review-card,
+  body[data-view="cards"] .review-card-inner,
+  body[data-view="cards"] .card-face { width: 100%; }
   body[data-view="cards"] .card-face { padding: 28px 24px; border-radius: 24px; }
   body[data-view="cards"] .review-card-inner { border-radius: 24px; }
   body[data-view="cards"] .card-content { font-size: clamp(1.35rem, 7vw, 1.9rem); }
