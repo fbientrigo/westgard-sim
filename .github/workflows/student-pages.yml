@@ -1,15 +1,12 @@
-name: Deploy Student Frontend
+name: Deploy Student Experience
 
 on:
   workflow_dispatch:
   push:
     branches: ["main", "master"]
     paths:
-      - "apps/student-web/**"
-      - "content/**"
-      - "qc_lab_simulator/**"
-      - "scripts/export_web_data.py"
-      - "scripts/sync_student_web_assets.py"
+      - "apps/student-next/**"
+      - "content/flashcards/westgard_qc_basics.deck.json"
       - ".github/workflows/student-pages.yml"
 
 permissions:
@@ -28,56 +25,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
-
-      - name: Export web dataset
-        run: python scripts/export_web_data.py --catalog content/experiment_catalog.json --output-dir outputs/web_data
-
-      - name: Export flashcards
-        run: python scripts/export_flashcards.py --deck content/flashcards/westgard_qc_basics.deck.json --output-dir outputs/flashcards/westgard_qc_basics
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-          cache-dependency-path: apps/student-web/package-lock.json
-
-      - name: Install frontend dependencies
-        run: npm ci
-        working-directory: apps/student-web
-
-      - name: Sync static assets into frontend public assets
-        run: npm run sync:data
-        working-directory: apps/student-web
-
-      - name: Resolve Vite base path
-        id: base
-        shell: pwsh
+      - name: Assemble static student site
+        shell: bash
         run: |
-          $repo = "${{ github.event.repository.name }}"
-          if ($repo.ToLower().EndsWith(".github.io")) {
-            "value=/" >> $env:GITHUB_OUTPUT
-          } else {
-            "value=/$repo/" >> $env:GITHUB_OUTPUT
-          }
+          set -euo pipefail
+          mkdir -p _site/data
+          cp apps/student-next/index.html _site/index.html
+          cp apps/student-next/styles.css _site/styles.css
+          cp apps/student-next/app.js _site/app.js
+          cp content/flashcards/westgard_qc_basics.deck.json _site/data/cards.json
+          touch _site/.nojekyll
 
-      - name: Build frontend
-        env:
-          VITE_BASE_PATH: ${{ steps.base.outputs.value }}
-        run: npm run build
-        working-directory: apps/student-web
+      - name: Verify required assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s _site/index.html
+          test -s _site/styles.css
+          test -s _site/app.js
+          test -s _site/data/cards.json
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/student-web/dist
+          path: _site
 
   deploy:
     environment:
