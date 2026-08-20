@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f8fb" />
+  <meta name="description" content="Aprende y practica reglas de Westgard con visualizaciones y tarjetas interactivas." />
+  <title>Westgard — práctica visual</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body data-view="home">
+  <header class="topbar">
+    <a class="brand" href="#home" data-route="home" aria-label="Ir al inicio">
+      <span class="brand-mark">W</span>
+      <span>Westgard</span>
+    </a>
+    <span class="topbar-note">Control de calidad, sin memorizar a ciegas</span>
+  </header>
+
+  <header class="session-bar" aria-label="Navegación de sesión">
+    <button class="icon-button" type="button" data-route="home" aria-label="Volver al inicio">←</button>
+    <div class="session-progress"><span id="card-progress-bar"></span></div>
+    <span id="card-progress-label">0 / 0</span>
+  </header>
+
+  <main>
+    <section class="view home-view" data-view-panel="home">
+      <div class="hero">
+        <p class="eyebrow">Ayuda de estudio</p>
+        <h1>Entiende qué patrón ves y qué decisión implica.</h1>
+        <p class="hero-copy">Una referencia interactiva para estudiantes de laboratorio clínico: reglas, gráfico de Levey–Jennings y repaso activo en el mismo lugar.</p>
+      </div>
+
+      <div class="entry-grid" aria-label="Modos de estudio">
+        <button class="entry-card" type="button" data-route="rules">
+          <span class="entry-number">01</span>
+          <span class="entry-title">Aprender las reglas</span>
+          <span class="entry-copy">Reconoce el patrón, su lectura y la acción asociada.</span>
+          <span class="entry-action">Abrir referencia →</span>
+        </button>
+
+        <button class="entry-card featured" type="button" data-route="practice">
+          <span class="entry-number">02</span>
+          <span class="entry-title">Practicar con el gráfico</span>
+          <span class="entry-copy">Mueve los puntos y observa qué reglas se activan.</span>
+          <span class="entry-action">Entrar al laboratorio →</span>
+        </button>
+
+        <button class="entry-card" type="button" data-route="cards">
+          <span class="entry-number">03</span>
+          <span class="entry-title">Repasar tarjetas</span>
+          <span class="entry-copy">Recuperación activa, rápida y cómoda en celular.</span>
+          <span class="entry-action">Iniciar sesión →</span>
+        </button>
+      </div>
+
+      <p class="scope-note">La práctica visual evalúa las tres reglas implementadas por el motor actual: 1₂s, 1₃s y 2₂s. Las demás se mantienen como referencia y repaso.</p>
+    </section>
+
+    <section class="view" data-view-panel="rules" hidden>
+      <div class="section-heading">
+        <button class="back-link" type="button" data-route="home">← Inicio</button>
+        <p class="eyebrow">Referencia visual</p>
+        <h2>Las reglas como patrones, no como códigos.</h2>
+        <p>Primero identifica qué hacen los puntos. Después nombra la regla.</p>
+      </div>
+      <div id="rules-grid" class="rules-grid"></div>
+    </section>
+
+    <section class="view" data-view-panel="practice" hidden>
+      <div class="section-heading practice-heading">
+        <button class="back-link" type="button" data-route="home">← Inicio</button>
+        <p class="eyebrow">Laboratorio visual</p>
+        <h2>Cambia dos controles. Mira qué cambia.</h2>
+      </div>
+
+      <div class="practice-layout">
+        <section class="chart-panel" aria-labelledby="chart-title">
+          <div class="panel-heading">
+            <div>
+              <p class="micro-label">Levey–Jennings</p>
+              <h3 id="chart-title">Serie de control</h3>
+            </div>
+            <span class="status-pill" id="run-status">En control</span>
+          </div>
+          <div id="chart" class="chart" role="img" aria-label="Gráfico de Levey-Jennings interactivo"></div>
+          <p class="chart-hint">Los valores se muestran como desviaciones estándar respecto de la media.</p>
+        </section>
+
+        <aside class="control-panel">
+          <div>
+            <p class="micro-label">Explora un patrón</p>
+            <div class="preset-row" id="preset-row"></div>
+          </div>
+
+          <label class="range-control">
+            <span>Control anterior <strong id="prev-value">+0.0 DE</strong></span>
+            <input id="prev-slider" type="range" min="-3.5" max="3.5" step="0.1" value="0.6" />
+          </label>
+
+          <label class="range-control">
+            <span>Último control <strong id="last-value">+0.0 DE</strong></span>
+            <input id="last-slider" type="range" min="-3.5" max="3.5" step="0.1" value="0.8" />
+          </label>
+
+          <div>
+            <p class="micro-label">Lectura del estado</p>
+            <div id="rule-results" class="rule-results" aria-live="polite"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view cards-view" data-view-panel="cards" hidden>
+      <div class="cards-desktop-intro">
+        <button class="back-link" type="button" data-route="home">← Inicio</button>
+        <p class="eyebrow">Repaso activo</p>
+        <h2>Responde antes de revelar.</h2>
+      </div>
+
+      <div class="review-shell">
+        <div id="review-card" class="review-card" tabindex="0" role="button" aria-label="Tarjeta de estudio. Pulsa para revelar la respuesta.">
+          <div class="review-card-inner">
+            <article class="card-face card-front">
+              <span class="card-kicker" id="card-tag">Tarjeta</span>
+              <div class="card-content" id="card-question">Cargando tarjetas…</div>
+              <span class="tap-hint">Toca para revelar</span>
+            </article>
+            <article class="card-face card-back">
+              <span class="card-kicker">Respuesta</span>
+              <div class="card-content" id="card-answer"></div>
+            </article>
+          </div>
+        </div>
+
+        <div id="rating-actions" class="rating-actions" hidden>
+          <button class="rating-button again" type="button" data-rating="again">No la supe</button>
+          <button class="rating-button known" type="button" data-rating="known">La supe</button>
+        </div>
+
+        <p class="cards-hint">Espacio: revelar · ← no la supe · → la supe</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
