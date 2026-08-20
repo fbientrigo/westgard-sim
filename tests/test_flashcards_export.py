@@ -42,6 +42,8 @@ def test_export_flashcard_deck_writes_expected_outputs(tmp_path: Path) -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert manifest["deck_id"] == "westgard_qc_basics"
     assert manifest["card_count"] == 20
+    assert manifest["source_deck"] == "content/flashcards/westgard_qc_basics.deck.json"
+    assert manifest["theme_path"] == "content/flashcards/theme_tokens.json"
     assert manifest["outputs"]["study_deck"] == "study_deck.json"
 
     web_deck = json.loads(web_deck_path.read_text(encoding="utf-8"))

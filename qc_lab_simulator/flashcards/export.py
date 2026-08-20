@@ -9,7 +9,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from .io import DEFAULT_THEME_PATH, load_flashcard_deck, load_theme_tokens
+from .io import DEFAULT_THEME_PATH, REPO_ROOT, load_flashcard_deck, load_theme_tokens
 from .localization import card_type_label, tag_label
 from .markup import render_markup_to_html
 from .models import Flashcard, FlashcardDeck
@@ -147,6 +147,14 @@ def _render_web_deck(path: Path, deck: FlashcardDeck) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def _portable_path(path: Path) -> str:
+    resolved = Path(path).resolve()
+    try:
+        return resolved.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return resolved.as_posix()
+
+
 def export_flashcard_deck(
     deck_path: Path,
     output_dir: Path,
@@ -177,8 +185,8 @@ def export_flashcard_deck(
         "deck_id": deck.deck_id,
         "format_version": deck.format_version,
         "card_count": len(deck.cards),
-        "source_deck": str(Path(deck_path).as_posix()),
-        "theme_path": str(Path(theme_path or DEFAULT_THEME_PATH).as_posix()),
+        "source_deck": _portable_path(deck_path),
+        "theme_path": _portable_path(theme_path or DEFAULT_THEME_PATH),
         "outputs": {
             "csv": csv_path.name,
             "html_preview": html_path.name,

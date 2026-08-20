@@ -3,7 +3,7 @@
   "format_version": "1.0",
   "card_count": 20,
   "source_deck": "content/flashcards/westgard_qc_basics.deck.json",
-  "theme_path": "C:/Users/Asus/Documents/code/westgard/content/flashcards/theme_tokens.json",
+  "theme_path": "content/flashcards/theme_tokens.json",
   "outputs": {
     "csv": "westgard_qc_basics.csv",
     "html_preview": "preview.html",
