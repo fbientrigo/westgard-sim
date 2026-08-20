@@ -1,0 +1,79 @@
+{
+  "format_version": "1.0",
+  "mean": 100.0,
+  "sd": 2.0,
+  "scenarios": [
+    {
+      "id": "in-control-01",
+      "label": "En control",
+      "family": "in_control",
+      "z_values": [0.4, -0.6, 0.9, -0.3, 0.7, -1.1, 0.2, 1.4, -0.8, 0.5],
+      "editable_run": 8,
+      "teaching": {
+        "pattern": "Ningún control se aleja lo suficiente de la media como para activar una regla.",
+        "why": "Todos los valores permanecen dentro de ±2 DE, así que ninguna de las tres reglas evaluadas se cumple.",
+        "action_text": "Acepta la sesión y libera resultados."
+      }
+    },
+    {
+      "id": "warning-1-2s-01",
+      "label": "Advertencia 1₂s aislada",
+      "family": "isolated_warning",
+      "z_values": [-0.5, 0.6, -0.2, 1.1, -0.9, 0.3, 1.6, -0.4, 2.4, -0.7],
+      "editable_run": 9,
+      "teaching": {
+        "pattern": "Un solo control (el 9) supera +2 DE; el resto de la serie está dentro de los límites.",
+        "why": "El control 9 supera +2 DE, así que 1₂s se cumple. Ningún otro control participa, por lo que 1₃s y 2₂s no se cumplen.",
+        "action_text": "Revisa la sesión antes de liberar resultados; no la rechaces solo por esta advertencia."
+      }
+    },
+    {
+      "id": "reject-1-3s-01",
+      "label": "Rechazo 1₃s aislado",
+      "family": "single_extreme",
+      "z_values": [0.3, -0.7, 0.5, -1.2, 0.8, -0.4, 1.0, -3.3, 0.6, -0.5],
+      "editable_run": 8,
+      "teaching": {
+        "pattern": "El control 8 se aleja de forma extrema de la media, más allá de −3 DE.",
+        "why": "El control 8 supera −3 DE, así que 1₃s se cumple; también supera −2 DE, así que 1₂s se cumple. Ningún par consecutivo comparte el mismo lado, así que 2₂s no se cumple.",
+        "action_text": "No liberes resultados: investiga, corrige y repite los controles."
+      }
+    },
+    {
+      "id": "reject-2-2s-01",
+      "label": "Rechazo 2₂s del mismo lado",
+      "family": "systematic_shift",
+      "z_values": [0.5, -0.4, 0.7, -0.6, 0.9, 1.2, 2.3, 2.6, 1.8, 0.4],
+      "editable_run": 8,
+      "teaching": {
+        "pattern": "Los controles 7 y 8, consecutivos, superan +2 DE del mismo lado.",
+        "why": "Los controles 7 y 8 superan +2 DE y están del mismo lado, así que 2₂s se cumple. Ninguno supera ±3 DE, así que 1₃s no se cumple.",
+        "action_text": "No liberes resultados: busca una causa persistente (calibración, lote, instrumento)."
+      }
+    },
+    {
+      "id": "boundary-exact-2s-01",
+      "label": "Límite exacto en 2 DE",
+      "family": "near_boundary",
+      "z_values": [-0.3, 0.8, -0.6, 1.3, -0.9, 0.4, 1.7, 2.0, -0.5, 0.7],
+      "editable_run": 8,
+      "teaching": {
+        "pattern": "El control 8 llega exactamente a +2 DE, sin superarlo.",
+        "why": "Las reglas exigen superar el límite de forma estricta. El control 8 está exactamente en +2 DE, así que ninguna regla se cumple.",
+        "action_text": "Acepta la sesión y libera resultados."
+      }
+    },
+    {
+      "id": "distractor-opposite-01",
+      "label": "Distractor de lados opuestos",
+      "family": "misleading_distractor",
+      "z_values": [0.4, -0.8, 0.6, -0.5, 1.1, -0.7, 2.3, -2.4, 0.9, -0.3],
+      "editable_run": 8,
+      "teaching": {
+        "pattern": "Los controles 7 y 8 son consecutivos y ambos superan 2 DE, pero en lados opuestos.",
+        "why": "Los controles 7 y 8 superan 2 DE cada uno, así que 1₂s se cumple para ambos; pero están en lados opuestos, así que 2₂s exige el mismo lado y no se cumple.",
+        "action_text": "Revisa la sesión antes de liberar resultados; no la rechaces solo por esta advertencia."
+      }
+    }
+  ]
+}

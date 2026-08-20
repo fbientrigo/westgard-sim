@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f8fb" />
+  <meta name="description" content="Practica reglas de Westgard con gráficos de Levey-Jennings y comprueba tu razonamiento." />
+  <title>Westgard — práctica</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body data-view="home">
+  <header class="topbar">
+    <a class="brand" href="#home" data-route="home" aria-label="Ir al inicio">
+      <span class="brand-mark">W</span>
+      <span>Westgard</span>
+    </a>
+  </header>
+
+  <header class="session-bar" aria-label="Navegación de sesión">
+    <button class="icon-button" type="button" data-route="home" aria-label="Volver al inicio">←</button>
+    <div class="session-progress" role="presentation"><span id="session-progress-bar"></span></div>
+    <span id="session-progress-label">0 / 0</span>
+    <button class="icon-button" type="button" id="share-button" hidden aria-label="Compartir este escenario">⇪</button>
+  </header>
+
+  <main>
+    <section class="view home-view" data-view-panel="home">
+      <h1>¿Aceptas o rechazas esta sesión?</h1>
+      <p class="home-lead">Practica con gráficos de Levey–Jennings y comprueba tu razonamiento.</p>
+
+      <div class="home-primary">
+        <button class="primary-button" type="button" data-route="practice">Empezar práctica</button>
+        <p class="home-note">6 escenarios · sin cuenta · sin instalar</p>
+      </div>
+
+      <div class="home-secondary">
+        <button class="outline-button" type="button" data-route="rules">Reglas</button>
+        <button class="outline-button" type="button" data-route="cards">Tarjetas</button>
+      </div>
+    </section>
+
+    <section class="view" data-view-panel="rules" hidden>
+      <div class="section-heading">
+        <button class="back-link" type="button" data-route="home">← Inicio</button>
+        <h2>Reglas</h2>
+      </div>
+      <div id="rules-list" class="rules-list"></div>
+    </section>
+
+    <section class="view practice-view" data-view-panel="practice" hidden>
+      <p id="practice-prompt" class="practice-prompt"></p>
+
+      <div id="practice-chart" class="chart" aria-labelledby="practice-prompt"></div>
+      <p id="practice-status" role="status" class="visually-hidden"></p>
+
+      <div id="run-strip" class="run-strip" role="group" aria-label="Controles de la sesión"></div>
+
+      <div id="phase-controls" class="phase-controls"></div>
+
+      <div id="reveal-block" class="reveal-block" hidden></div>
+    </section>
+
+    <section class="view cards-view" data-view-panel="cards" hidden>
+      <div class="cards-desktop-intro">
+        <button class="back-link" type="button" data-route="home">← Inicio</button>
+        <h2>Tarjetas</h2>
+      </div>
+
+      <div id="cards-browse" class="cards-browse"></div>
+
+      <div id="cards-session" class="review-shell">
+        <button id="review-card" class="review-card" type="button" aria-label="Tarjeta de estudio. Pulsa para revelar la respuesta.">
+          <span class="review-card-inner">
+            <span class="card-face card-front">
+              <span class="card-kicker" id="card-tag">Tarjeta</span>
+              <span class="card-content" id="card-question">Cargando tarjetas…</span>
+              <span class="tap-hint">Toca para revelar</span>
+            </span>
+            <span class="card-face card-back">
+              <span class="card-kicker">Respuesta</span>
+              <span class="card-content" id="card-answer"></span>
+            </span>
+          </span>
+        </button>
+
+        <div id="rating-actions" class="rating-actions" hidden>
+          <button class="rating-button again" type="button" data-rating="again">No la supe</button>
+          <button class="rating-button known" type="button" data-rating="known">La supe</button>
+        </div>
+
+        <p class="cards-hint">Espacio: revelar · ← no la supe · → la supe</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

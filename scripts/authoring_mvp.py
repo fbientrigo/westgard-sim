@@ -595,7 +595,7 @@ def _render_experiments_tab() -> None:
         )
     with c2:
         config["n_runs"] = int(
-            st.number_input("Cantidad de corridas", value=int(config.get("n_runs", 30)), min_value=5)
+            st.number_input("Cantidad de sesiones", value=int(config.get("n_runs", 30)), min_value=5)
         )
         config["seed"] = int(st.number_input("Semilla", value=int(config.get("seed", 42)), min_value=0))
 
@@ -643,7 +643,7 @@ def _render_experiments_tab() -> None:
         params["shift_sd"] = float(st.number_input("Magnitud del sesgo", value=float(params.get("shift_sd", 3.0))))
     elif scenario["type"] == "trend":
         params["drift_per_run"] = float(
-            st.number_input("Pendiente por corrida", value=float(params.get("drift_per_run", 0.25)))
+            st.number_input("Pendiente por sesión", value=float(params.get("drift_per_run", 0.25)))
         )
     else:
         params["sd_multiplier"] = float(
