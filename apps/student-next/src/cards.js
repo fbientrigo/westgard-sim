@@ -6,6 +6,8 @@
 import { renderCardMarkup } from "./markup.js";
 import { readJSON, writeJSON, clearKey, CARDS_KEY } from "./storage.js";
 
+const SWIPE_THRESHOLD = 104;
+
 const state = {
   allCards: [],
   rules: [],
@@ -20,7 +22,11 @@ const state = {
   requeuedIds: [],
   revealed: false,
   sessionActive: false,
+  pointerId: null,
   pointerStartX: null,
+  pointerStartY: null,
+  pointerMoved: false,
+  suppressNextClick: false,
 };
 
 let fetchJSONRef = null;
@@ -128,26 +134,105 @@ export function restoreSession(saved, allowedCardIds) {
   };
 }
 
+function resetCardMotion() {
+  const card = cacheElements().card;
+  card.classList.remove("dragging", "leaving");
+  card.style.transform = "";
+}
+
+function setCardDragMotion(dx, dy) {
+  const card = cacheElements().card;
+  const limitedY = Math.max(-72, Math.min(72, dy));
+  const tiltX = Math.max(-6, Math.min(6, -dy / 32));
+  const tiltY = Math.max(-9, Math.min(9, dx / 24));
+  const rotationZ = Math.max(-9, Math.min(9, dx / 28));
+  card.style.transform = `perspective(1200px) translate3d(${dx}px, ${limitedY}px, 0) rotateX(${tiltX}deg) rotateY(${tiltY}deg) rotateZ(${rotationZ}deg)`;
+}
+
+function setCardHoverMotion(event) {
+  if (event.pointerType !== "mouse" || state.pointerId !== null) return;
+  const card = cacheElements().card;
+  const rect = card.getBoundingClientRect();
+  const nx = (event.clientX - rect.left) / Math.max(rect.width, 1) - 0.5;
+  const ny = (event.clientY - rect.top) / Math.max(rect.height, 1) - 0.5;
+  card.style.transform = `perspective(1200px) rotateX(${-ny * 5}deg) rotateY(${nx * 7}deg)`;
+}
+
+function animateSwipeRating(rating) {
+  const card = cacheElements().card;
+  const direction = rating === "known" ? 1 : -1;
+  card.classList.remove("dragging");
+  card.classList.add("leaving");
+  card.style.transform = `perspective(1200px) translate3d(${direction * 440}px, -12px, 0) rotateZ(${direction * 10}deg)`;
+
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  window.setTimeout(() => {
+    resetCardMotion();
+    rateCard(rating);
+  }, reducedMotion ? 0 : 180);
+}
+
 export function initCards({ fetchJSON }) {
   fetchJSONRef = fetchJSON;
   const els = cacheElements();
 
-  els.card.addEventListener("click", revealCard);
+  els.card.addEventListener("click", () => {
+    if (state.suppressNextClick) {
+      state.suppressNextClick = false;
+      return;
+    }
+    revealCard();
+  });
   els.rating.addEventListener("click", (event) => {
     const button = event.target.closest("[data-rating]");
     if (button) rateCard(button.dataset.rating);
   });
   els.card.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0 || isFinished()) return;
+    state.pointerId = event.pointerId;
     state.pointerStartX = event.clientX;
+    state.pointerStartY = event.clientY;
+    state.pointerMoved = false;
+    state.suppressNextClick = false;
+    els.card.classList.add("dragging");
+    els.card.setPointerCapture?.(event.pointerId);
+  });
+  els.card.addEventListener("pointermove", (event) => {
+    if (state.pointerId === event.pointerId && state.pointerStartX !== null && state.pointerStartY !== null) {
+      const dx = event.clientX - state.pointerStartX;
+      const dy = event.clientY - state.pointerStartY;
+      state.pointerMoved ||= Math.hypot(dx, dy) > 7;
+      setCardDragMotion(dx, dy);
+      return;
+    }
+    setCardHoverMotion(event);
   });
   els.card.addEventListener("pointerup", (event) => {
-    if (state.pointerStartX === null || !state.revealed || isFinished()) return;
-    const delta = event.clientX - state.pointerStartX;
+    if (state.pointerId !== event.pointerId || state.pointerStartX === null || state.pointerStartY === null) return;
+    els.card.releasePointerCapture?.(event.pointerId);
+    const dx = event.clientX - state.pointerStartX;
+    state.suppressNextClick = state.pointerMoved;
+    state.pointerId = null;
     state.pointerStartX = null;
-    if (delta > 80) rateCard("known");
-    if (delta < -80) rateCard("again");
+    state.pointerStartY = null;
+    state.pointerMoved = false;
+
+    if (state.revealed && Math.abs(dx) >= SWIPE_THRESHOLD && !isFinished()) {
+      animateSwipeRating(dx > 0 ? "known" : "again");
+      return;
+    }
+    resetCardMotion();
   });
-  els.card.addEventListener("pointercancel", () => { state.pointerStartX = null; });
+  els.card.addEventListener("pointercancel", () => {
+    state.pointerId = null;
+    state.pointerStartX = null;
+    state.pointerStartY = null;
+    state.pointerMoved = false;
+    resetCardMotion();
+  });
+  els.card.addEventListener("pointerleave", () => {
+    if (state.pointerId === null) resetCardMotion();
+  });
 
   document.addEventListener("keydown", (event) => {
     if (document.body.dataset.view !== "cards" || !state.sessionActive) return;
@@ -315,6 +400,7 @@ function updateSessionProgress() {
 
 function renderCurrentCard() {
   const els = cacheElements();
+  resetCardMotion();
   if (isFinished()) {
     renderSummaryCard();
     return;
@@ -323,6 +409,7 @@ function renderCurrentCard() {
   if (!card) return;
 
   state.revealed = false;
+  state.suppressNextClick = false;
   els.card.classList.remove("revealed");
   els.rating.hidden = true;
   els.card.disabled = false;
@@ -339,6 +426,7 @@ function renderCurrentCard() {
 function revealCard() {
   if (!state.sessionActive || isFinished() || !currentCard()) return;
   const els = cacheElements();
+  resetCardMotion();
   state.revealed = true;
   els.card.classList.add("revealed");
   els.card.setAttribute("aria-label", "Respuesta de la tarjeta. Usa No la supe o La supe para continuar.");
@@ -373,6 +461,7 @@ function rateCard(rating) {
 
 function renderSummaryCard() {
   const els = cacheElements();
+  resetCardMotion();
   els.card.classList.remove("revealed");
   els.card.disabled = true;
   els.card.setAttribute("aria-label", "Sesión completa.");
