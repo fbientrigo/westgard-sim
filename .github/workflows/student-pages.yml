@@ -1,8 +1,14 @@
-name: Deploy Student Experience
+name: Student Experience
 
 on:
   workflow_dispatch:
   push:
+    branches: ["main", "master"]
+    paths:
+      - "apps/student-next/**"
+      - "content/flashcards/westgard_qc_basics.deck.json"
+      - ".github/workflows/student-pages.yml"
+  pull_request:
     branches: ["main", "master"]
     paths:
       - "apps/student-next/**"
@@ -15,7 +21,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "student-pages"
+  group: "student-pages-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
@@ -24,6 +30,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Check JavaScript syntax
+        run: node --check apps/student-next/app.js
+
+      - name: Validate canonical card deck
+        run: python -m json.tool content/flashcards/westgard_qc_basics.deck.json > /dev/null
 
       - name: Assemble static student site
         shell: bash
@@ -46,11 +58,13 @@ jobs:
           test -s _site/data/cards.json
 
       - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
   deploy:
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
