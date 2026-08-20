@@ -26,6 +26,7 @@ env/
 outputs/
 apps/student-web/public/web_data/
 apps/student-web/public/educational/
+apps/student-next/data/
 
 # Jupyter
 .ipynb_checkpoints/

@@ -1,34 +1,42 @@
-# Student Next — greenfield Westgard experience
+# Student Next — práctica Westgard
 
-This app is intentionally independent from `apps/student-web`.
+Aplicación estática e independiente para estudiantes de Bioquímica Clínica.
+La práctica siempre sigue el mismo ciclo: observar el gráfico de
+Levey–Jennings → marcar evidencia → identificar la regla → decidir la acción
+→ revelar la evidencia validada → probar un contrafactual.
 
-## Product goal
+## Ejecutar localmente
 
-Help a student recognize a QC pattern, connect it to a Westgard rule, and understand the immediate decision without turning the site into a dashboard or documentation portal.
+Desde la raíz del repositorio:
 
-## Three entry points
-
-1. **Rules** — compact visual reference: pattern → meaning → action.
-2. **Practice** — Levey–Jennings sandbox with immediate rule feedback.
-3. **Cards** — active recall session using the canonical deck in `content/flashcards/`.
-
-## Guardrails
-
-- Mobile card review behaves like a focused study session: card, progress, rating, home.
-- The practice engine only evaluates rules currently implemented in `qc_lab_simulator/rules.py`: `1_2s`, `1_3s`, and `2_2s`.
-- `R_4s`, `4_1s`, and `10x` remain reference/study content until the canonical rule engine supports them.
-- No auth, database, analytics, framework, or backend is required for the student experience.
-- Interactions must explain state changes instead of decorating the page.
-- Generated/exported content remains separate from presentation code.
-
-## Local preview
-
-The deployed workflow copies the canonical deck to `data/cards.json`. For a local preview, serve this directory over HTTP and provide the same file path, for example:
-
-```bash
-mkdir -p apps/student-next/data
-cp content/flashcards/westgard_qc_basics.deck.json apps/student-next/data/cards.json
+```powershell
+python scripts/export_student_next_data.py --output-dir apps/student-next/data
 python -m http.server 8000 -d apps/student-next
 ```
 
-Then open `http://localhost:8000`.
+Abre <http://localhost:8000>. Se requiere un servidor HTTP porque el navegador
+carga los JSON generados mediante `fetch`; `file://` no es suficiente.
+
+## Validar
+
+```powershell
+python -m pytest tests/test_evidence.py tests/test_student_next_export.py -q
+node --test "apps/student-next/test/*.test.js"
+node --check apps/student-next/app.js
+```
+
+`apps/student-next/data/` se genera a partir de las fuentes canónicas y está
+ignorado por Git. No se edita ni se confirma manualmente.
+
+## Revisión manual antes de publicar
+
+- Desktop: abrir Home, completar los seis escenarios, probar los
+  contrafactuales de `warning-1-2s-01` y `reject-2-2s-01`, expandir una regla y
+  abrir tarjetas desde ella.
+- 360 px, 390 px y 430 px: completar evidencia, regla y acción sin desplazarse
+  entre el gráfico y los controles; verificar revelado y contrafactual; revisar
+  la sesión de tarjetas.
+- Solo teclado: completar un escenario, usar `Esc` para volver al inicio y usar
+  `Espacio`, `←` y `→` en una sesión de tarjetas.
+- Lector de pantalla: confirmar que la tabla adyacente enumera los diez
+  controles y que el resumen del gráfico no revela una regla antes del bloqueo.

@@ -7,12 +7,20 @@ on:
     paths:
       - "apps/student-next/**"
       - "content/flashcards/westgard_qc_basics.deck.json"
+      - "content/practice_scenarios.json"
+      - "content/rules_reference.json"
+      - "qc_lab_simulator/evidence.py"
+      - "scripts/export_student_next_data.py"
       - ".github/workflows/student-pages.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "apps/student-next/**"
       - "content/flashcards/westgard_qc_basics.deck.json"
+      - "content/practice_scenarios.json"
+      - "content/rules_reference.json"
+      - "qc_lab_simulator/evidence.py"
+      - "scripts/export_student_next_data.py"
       - ".github/workflows/student-pages.yml"
 
 permissions:
@@ -31,21 +39,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Check JavaScript syntax
         run: node --check apps/student-next/app.js
 
-      - name: Validate canonical card deck
-        run: python3 -m json.tool content/flashcards/westgard_qc_basics.deck.json > /dev/null
+      - name: Run frontend tests
+        run: node --test apps/student-next/test/*.test.js
+
+      - name: Install test runner
+        run: pip install pytest
+
+      - name: Test canonical evidence and export contract
+        run: python -m pytest tests/test_evidence.py tests/test_student_next_export.py -q
+
+      - name: Generate static student data
+        run: python scripts/export_student_next_data.py --output-dir _site/data
 
       - name: Assemble static student site
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p _site/data
           cp apps/student-next/index.html _site/index.html
           cp apps/student-next/styles.css _site/styles.css
           cp apps/student-next/app.js _site/app.js
-          cp content/flashcards/westgard_qc_basics.deck.json _site/data/cards.json
+          cp -R apps/student-next/src _site/src
           touch _site/.nojekyll
 
       - name: Verify required assets
@@ -56,6 +77,8 @@ jobs:
           test -s _site/styles.css
           test -s _site/app.js
           test -s _site/data/cards.json
+          test -s _site/data/rules.json
+          test -s _site/data/practice.json
 
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'

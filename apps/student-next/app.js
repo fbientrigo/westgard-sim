@@ -1,91 +1,56 @@
+// app.js — bootstrap + routing only. Rendering logic lives in src/*.js.
+// This file must never contain Westgard rule predicates (see contract
+// Section 5/28): no ±2/±3 SD comparisons, no same-side/consecutive checks.
+
+import { renderChart } from "./src/chart.js";
+import {
+  PracticeSession,
+  ruleOptions,
+  actionOptions,
+  ruleDisplay,
+  actionLabel,
+  counterfactualAt,
+  gridIndexForZ,
+  boundarySentenceForZ,
+  loadProgress,
+  saveProgress,
+  markScenarioComplete,
+  firstUnfinishedScenarioId,
+} from "./src/practice.js";
+import { renderLearn } from "./src/learn.js";
+import { initCards, onCardsRouteEnter } from "./src/cards.js";
+
 const ROUTES = new Set(["home", "rules", "practice", "cards"]);
 
-const RULES = [
-  {
-    code: "1₂s",
-    role: "Advertencia",
-    roleClass: "warning",
-    pattern: "Un punto supera ±2 DE.",
-    detail: "Es sensible, pero por sí sola no significa rechazo automático. Sirve para mirar la corrida con más atención.",
-    action: "Revisa si aparece otra regla antes de decidir.",
-    engine: true,
-  },
-  {
-    code: "1₃s",
-    role: "Rechazo",
-    roleClass: "reject",
-    pattern: "Un punto supera ±3 DE.",
-    detail: "Un desvío aislado de esta magnitud es compatible con un problema analítico importante.",
-    action: "No liberes resultados hasta investigar y recuperar control.",
-    engine: true,
-  },
-  {
-    code: "2₂s",
-    role: "Rechazo",
-    roleClass: "reject",
-    pattern: "Dos puntos consecutivos superan 2 DE del mismo lado.",
-    detail: "La repetición en la misma dirección orienta a un desplazamiento sistemático.",
-    action: "Investiga una fuente persistente de sesgo antes de continuar.",
-    engine: true,
-  },
-  {
-    code: "R₄s",
-    role: "Referencia",
-    roleClass: "",
-    pattern: "Dos controles de una corrida quedan separados por más de 4 DE.",
-    detail: "El contraste entre un valor alto y otro bajo orienta principalmente a error aleatorio.",
-    action: "Busca una fuente de imprecisión o variación aleatoria.",
-    engine: false,
-  },
-  {
-    code: "4₁s",
-    role: "Referencia",
-    roleClass: "",
-    pattern: "Cuatro puntos consecutivos superan 1 DE del mismo lado.",
-    detail: "Una secuencia sostenida hacia un lado de la media sugiere un desplazamiento sistemático.",
-    action: "Busca un cambio persistente en calibración, lote o instrumento.",
-    engine: false,
-  },
-  {
-    code: "10x",
-    role: "Referencia",
-    roleClass: "",
-    pattern: "Diez puntos consecutivos quedan del mismo lado de la media.",
-    detail: "Aunque varios puntos estén cerca de la media, la persistencia de un solo lado es la señal importante.",
-    action: "Interpreta la serie completa; no evalúes cada punto de forma aislada.",
-    engine: false,
-  },
-];
-
-const PRESETS = [
-  { id: "stable", label: "En control", values: [-0.6, 0.4, -0.3, 0.7, -0.5, 0.2, 0.6, 0.8] },
-  { id: "1-2s", label: "1₂s", values: [-0.4, 0.3, -0.6, 0.5, -0.2, 0.7, 0.9, 2.4] },
-  { id: "1-3s", label: "1₃s", values: [0.1, -0.4, 0.5, -0.3, 0.6, 0.2, 0.4, 3.2] },
-  { id: "2-2s", label: "2₂s", values: [-0.5, 0.2, -0.4, 0.5, -0.2, 0.4, 2.3, 2.5] },
-];
-
-const state = {
-  values: [...PRESETS[0].values],
-  deck: [],
-  cardIndex: 0,
-  revealed: false,
-  known: 0,
-  again: 0,
-  finished: false,
-  pointerStartX: null,
-};
-
 const panels = [...document.querySelectorAll("[data-view-panel]")];
-const reviewCard = document.querySelector("#review-card");
-const ratingActions = document.querySelector("#rating-actions");
-const question = document.querySelector("#card-question");
-const answer = document.querySelector("#card-answer");
-const cardTag = document.querySelector("#card-tag");
-const progressBar = document.querySelector("#card-progress-bar");
-const progressLabel = document.querySelector("#card-progress-label");
+const shareButton = document.querySelector("#share-button");
+const sessionProgressBar = document.querySelector("#session-progress-bar");
+const sessionProgressLabel = document.querySelector("#session-progress-label");
+
+const dataCache = {};
+let practiceData = null;
+let rulesData = null;
+let session = null;
+
+async function fetchJSON(path) {
+  if (dataCache[path]) return dataCache[path];
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`HTTP ${response.status} for ${path}`);
+  const payload = await response.json();
+  dataCache[path] = payload;
+  return payload;
+}
+
+function currentScenarioIdFromHash() {
+  const hash = window.location.hash.replace(/^#/, "");
+  const parts = hash.split("/");
+  if (parts[0] === "practice" && parts[1]) return parts[1];
+  return null;
+}
 
 function routeFromHash() {
-  const route = window.location.hash.replace(/^#/, "") || "home";
+  const hash = window.location.hash.replace(/^#/, "") || "home";
+  const route = hash.split("/")[0].split("?")[0];
   return ROUTES.has(route) ? route : "home";
 }
 
@@ -95,11 +60,13 @@ function showRoute(route, { updateHash = true } = {}) {
   panels.forEach((panel) => {
     panel.hidden = panel.dataset.viewPanel !== safeRoute;
   });
+  shareButton.hidden = safeRoute !== "practice";
 
-  if (safeRoute === "cards") ensureDeck();
-  if (safeRoute === "practice") renderPractice();
+  if (safeRoute === "cards") onCardsRouteEnter();
+  if (safeRoute === "practice") enterPractice();
+  if (safeRoute === "rules") renderRulesView();
 
-  if (updateHash && window.location.hash !== `#${safeRoute}`) {
+  if (updateHash && !window.location.hash.startsWith(`#${safeRoute}`)) {
     window.location.hash = safeRoute;
   }
   window.scrollTo({ top: 0, behavior: "auto" });
@@ -113,307 +80,492 @@ document.addEventListener("click", (event) => {
   }
 });
 
-window.addEventListener("hashchange", () => showRoute(routeFromHash(), { updateHash: false }));
-
-function renderRules() {
-  const grid = document.querySelector("#rules-grid");
-  grid.innerHTML = RULES.map((rule) => `
-    <article class="rule-card">
-      <div class="rule-card-top">
-        <span class="rule-code">${rule.code}</span>
-        <span class="rule-role ${rule.roleClass}">${rule.role}</span>
-      </div>
-      <p class="rule-pattern">${rule.pattern}</p>
-      <p class="rule-detail">${rule.detail}</p>
-      <p class="rule-action"><strong>Qué haces:</strong> ${rule.action}</p>
-      ${rule.engine ? "" : '<p class="scope-note">Disponible como referencia y tarjetas; aún no se evalúa en el laboratorio visual.</p>'}
-    </article>
-  `).join("");
-}
-
-function rule12s(values) {
-  return values.some((value) => Math.abs(value) > 2);
-}
-
-function rule13s(values) {
-  return values.some((value) => Math.abs(value) > 3);
-}
-
-function rule22s(values) {
-  for (let index = 0; index < values.length - 1; index += 1) {
-    const a = values[index];
-    const b = values[index + 1];
-    if ((a > 2 && b > 2) || (a < -2 && b < -2)) return true;
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    showRoute("home");
   }
-  return false;
-}
+});
 
-function evaluate(values) {
-  return [
-    {
-      code: "1₂s",
-      triggered: rule12s(values),
-      level: "warning",
-      note: "Algún control supera ±2 DE. Es una advertencia: revisa el resto del patrón.",
-    },
-    {
-      code: "1₃s",
-      triggered: rule13s(values),
-      level: "reject",
-      note: "Algún control supera ±3 DE. La corrida requiere rechazo e investigación.",
-    },
-    {
-      code: "2₂s",
-      triggered: rule22s(values),
-      level: "reject",
-      note: "Dos controles consecutivos superan 2 DE del mismo lado: patrón sistemático.",
-    },
-  ];
-}
+window.addEventListener("hashchange", () => {
+  const route = routeFromHash();
+  showRoute(route, { updateHash: false });
+});
 
-function formatZ(value) {
-  const number = Number(value);
-  return `${number >= 0 ? "+" : ""}${number.toFixed(1)} DE`;
-}
-
-function renderChart(values) {
-  const chart = document.querySelector("#chart");
-  const width = 760;
-  const height = 390;
-  const margin = { top: 22, right: 24, bottom: 36, left: 48 };
-  const plotWidth = width - margin.left - margin.right;
-  const plotHeight = height - margin.top - margin.bottom;
-  const x = (index) => margin.left + (index / (values.length - 1)) * plotWidth;
-  const y = (z) => margin.top + ((3.5 - z) / 7) * plotHeight;
-
-  const lines = [-3, -2, -1, 0, 1, 2, 3].map((z) => {
-    const strong = z === 0;
-    const label = z === 0 ? "Media" : `${z > 0 ? "+" : ""}${z} DE`;
-    return `
-      <line x1="${margin.left}" y1="${y(z)}" x2="${width - margin.right}" y2="${y(z)}"
-        stroke="${strong ? "#77839a" : "#dce2eb"}" stroke-width="${strong ? 1.6 : 1}" ${Math.abs(z) === 2 ? 'stroke-dasharray="5 5"' : ""} ${Math.abs(z) === 3 ? 'stroke-dasharray="2 5"' : ""}/>
-      <text x="${margin.left - 10}" y="${y(z) + 4}" text-anchor="end" fill="#657086" font-size="12">${label}</text>
-    `;
-  }).join("");
-
-  const path = values.map((value, index) => `${index === 0 ? "M" : "L"} ${x(index)} ${y(value)}`).join(" ");
-  const points = values.map((value, index) => {
-    const active = index >= values.length - 2;
-    const outside3 = Math.abs(value) > 3;
-    const outside2 = Math.abs(value) > 2;
-    const fill = outside3 ? "#b23a3a" : outside2 ? "#a36100" : active ? "#3157d5" : "#ffffff";
-    const stroke = outside3 ? "#b23a3a" : outside2 ? "#a36100" : "#3157d5";
-    return `
-      <circle cx="${x(index)}" cy="${y(value)}" r="${active ? 7 : 5.5}" fill="${fill}" stroke="${stroke}" stroke-width="2.2" />
-      <text x="${x(index)}" y="${height - 12}" text-anchor="middle" fill="#657086" font-size="12">${index + 1}</text>
-    `;
-  }).join("");
-
-  chart.innerHTML = `
-    <svg viewBox="0 0 ${width} ${height}" aria-hidden="true">
-      ${lines}
-      <path d="${path}" fill="none" stroke="#3157d5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-      ${points}
-    </svg>
-  `;
-}
-
-function renderResults(values) {
-  const results = evaluate(values);
-  const container = document.querySelector("#rule-results");
-  container.innerHTML = results.map((result) => `
-    <div class="rule-result ${result.triggered ? `triggered ${result.level}` : ""}">
-      <div class="rule-result-title">
-        <span>${result.code}</span>
-        <span>${result.triggered ? "Activada" : "No activada"}</span>
-      </div>
-      <p>${result.note}</p>
-    </div>
-  `).join("");
-
-  const status = document.querySelector("#run-status");
-  const reject = results.some((result) => result.triggered && result.level === "reject");
-  const warning = results.some((result) => result.triggered && result.level === "warning");
-  status.className = "status-pill";
-  if (reject) {
-    status.textContent = "Rechazar corrida";
-    status.classList.add("reject");
-  } else if (warning) {
-    status.textContent = "Revisar";
-    status.classList.add("warn");
-  } else {
-    status.textContent = "En control";
+window.addEventListener("resize", () => {
+  if (document.body.dataset.view === "practice" && session && session.phase !== "summary") {
+    renderPractice();
   }
+});
+
+// --- Practice --------------------------------------------------------------
+
+async function enterPractice() {
+  if (!practiceData) {
+    try {
+      practiceData = await fetchJSON("./data/practice.json");
+    } catch (error) {
+      const chartEl = document.querySelector("#practice-chart");
+      chartEl.textContent = "No fue posible cargar los escenarios de práctica.";
+      console.error(error);
+      return;
+    }
+  }
+
+  const scenarios = practiceData.scenarios;
+  let scenarioId = currentScenarioIdFromHash();
+  if (!scenarioId || !scenarios.some((s) => s.id === scenarioId)) {
+    const progress = loadProgress();
+    scenarioId = firstUnfinishedScenarioId(scenarios, progress);
+    window.location.hash = `practice/${scenarioId}`;
+  }
+
+  const scenario = scenarios.find((s) => s.id === scenarioId);
+  session = new PracticeSession(scenario);
+  renderPractice();
+}
+
+function scenarioIndex(scenarioId) {
+  return practiceData.scenarios.findIndex((s) => s.id === scenarioId);
+}
+
+function updateSessionBar() {
+  const total = practiceData.scenarios.length;
+  const idx = scenarioIndex(session.scenario.id);
+  sessionProgressLabel.textContent = `Escenario ${idx + 1} / ${total}`;
+  sessionProgressBar.style.width = `${((idx + 1) / total) * 100}%`;
+}
+
+function currentWidthPx() {
+  return window.innerWidth || 900;
 }
 
 function renderPractice() {
-  renderChart(state.values);
-  renderResults(state.values);
-  document.querySelector("#prev-value").textContent = formatZ(state.values.at(-2));
-  document.querySelector("#last-value").textContent = formatZ(state.values.at(-1));
-  document.querySelector("#prev-slider").value = state.values.at(-2);
-  document.querySelector("#last-slider").value = state.values.at(-1);
-}
-
-const presetRow = document.querySelector("#preset-row");
-presetRow.innerHTML = PRESETS.map((preset) => `<button class="preset-button" type="button" data-preset="${preset.id}">${preset.label}</button>`).join("");
-presetRow.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-preset]");
-  if (!button) return;
-  const preset = PRESETS.find((item) => item.id === button.dataset.preset);
-  if (!preset) return;
-  state.values = [...preset.values];
-  renderPractice();
-});
-
-function updateEditablePoint(offset, rawValue) {
-  const value = Number(rawValue);
-  state.values[state.values.length + offset] = value;
-  renderPractice();
-}
-
-document.querySelector("#prev-slider").addEventListener("input", (event) => updateEditablePoint(-2, event.target.value));
-document.querySelector("#last-slider").addEventListener("input", (event) => updateEditablePoint(-1, event.target.value));
-
-function formatCardMarkup(text) {
-  return String(text)
-    .replace(/\[\[[^:\]]+:([^\]]+)\]\]/g, '<span class="term">$1</span>')
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*([^*]+)\*/g, "<em>$1</em>");
-}
-
-async function ensureDeck() {
-  if (state.deck.length) {
-    renderCurrentCard();
+  if (session.phase === "summary") {
+    renderSetSummary();
     return;
   }
 
+  updateSessionBar();
+  const promptEl = document.querySelector("#practice-prompt");
+  const controlsEl = document.querySelector("#phase-controls");
+  const revealEl = document.querySelector("#reveal-block");
+  const chartEl = document.querySelector("#practice-chart");
+  const statusEl = document.querySelector("#practice-status");
+  const runStripEl = document.querySelector("#run-strip");
+
+  const scenario = session.scenario;
+  const phase = session.phase;
+  const showReveal = (phase === "reveal" || phase === "counterfactual") && !session.revealHidden;
+
+  let highlight = {};
+  if (showReveal) {
+    const governing = scenario.expected.rule;
+    if (governing) {
+      const governingEntry = scenario.evaluation.rules.find((r) => r.rule === governing);
+      highlight = {
+        evidenceRuns: governingEntry.evidence_runs,
+        selectedRuns: session.answers.evidenceRuns,
+        governingRuleDisplay: ruleDisplay(governing),
+        locked: true,
+        triggeredRules: scenario.evaluation.rules
+          .filter((entry) => entry.triggered)
+          .map((entry) => ({ display: ruleDisplay(entry.rule), evidenceRuns: entry.evidence_runs })),
+      };
+      if (governing === "2_2s") {
+        highlight.bracket = {
+          runs: governingEntry.evidence_runs,
+          label: "2 consecutivos · mismo lado",
+        };
+      }
+    } else {
+      highlight = { selectedRuns: session.answers.evidenceRuns, locked: true, triggeredRules: [] };
+    }
+  } else {
+    highlight = { selectedRuns: [] };
+  }
+
+  // In counterfactual phase, use the selected counterfactual record for
+  // chart + evaluation + text, all from the same precomputed record.
+  let activeScenarioForChart = scenario;
+  if (phase === "counterfactual" && session.counterfactualIndex !== null) {
+    const { result } = counterfactualAt(scenario, session.counterfactualIndex);
+    const points = scenario.points.map((p) =>
+      p.run === scenario.editable_run
+        ? { ...p, z: result.z, value: scenario.mean + result.z * scenario.sd, zone: zoneForCounterfactualPoint(result, scenario) }
+        : p
+    );
+    activeScenarioForChart = { ...scenario, points };
+    if (result.evaluation.governing_rule) {
+      const g = result.evaluation.rules.find((r) => r.rule === result.evaluation.governing_rule);
+      highlight = {
+        evidenceRuns: g.evidence_runs,
+        selectedRuns: session.answers.evidenceRuns,
+        governingRuleDisplay: ruleDisplay(result.evaluation.governing_rule),
+        locked: true,
+        triggeredRules: result.evaluation.rules
+          .filter((entry) => entry.triggered)
+          .map((entry) => ({ display: ruleDisplay(entry.rule), evidenceRuns: entry.evidence_runs })),
+      };
+      if (result.evaluation.governing_rule === "2_2s") {
+        highlight.bracket = { runs: g.evidence_runs, label: "2 consecutivos · mismo lado" };
+      }
+    } else {
+      highlight = { selectedRuns: session.answers.evidenceRuns, locked: true, triggeredRules: [] };
+    }
+  }
+
+  const { svg, table, status } = renderChart(activeScenarioForChart, highlight, currentWidthPx());
+  chartEl.innerHTML = svg + table;
+  statusEl.textContent = phase === "evidence" || phase === "rule" || phase === "action" ? status : status;
+
+  renderRunStrip(runStripEl, scenario, phase);
+  renderPhaseControls(controlsEl, promptEl);
+  renderRevealBlock(revealEl, showReveal);
+}
+
+function zoneForCounterfactualPoint(result, scenario) {
+  // Zone comes from the precomputed evaluation's own point data when the
+  // editable run participates in evidence, otherwise infer within_2sd
+  // fallback is impossible here because the exporter does not ship a
+  // per-counterfactual zone; instead classify purely from which rule
+  // entries list the editable run, never from a numeric comparison.
+  const run = scenario.editable_run;
+  const rulesTriggered = result.evaluation.rules;
+  const in13s = rulesTriggered.find((r) => r.rule === "1_3s").evidence_runs.includes(run);
+  const in12s = rulesTriggered.find((r) => r.rule === "1_2s").evidence_runs.includes(run);
+  if (in13s) return "beyond_3sd";
+  if (in12s) return "beyond_2sd";
+  return "within_2sd";
+}
+
+function renderRunStrip(container, scenario, phase) {
+  if (phase !== "evidence") {
+    container.innerHTML = "";
+    container.hidden = true;
+    return;
+  }
+  container.hidden = false;
+  container.innerHTML = scenario.points
+    .map((p) => {
+      const pressed = session.answers.evidenceRuns.includes(p.run);
+      return `<button type="button" class="run-button" data-run="${p.run}" aria-pressed="${pressed}">${p.run}</button>`;
+    })
+    .join("");
+
+  container.querySelectorAll("[data-run]").forEach((button) => {
+    button.addEventListener("click", () => {
+      session.toggleRun(Number(button.dataset.run));
+      renderPractice();
+    });
+  });
+}
+
+function renderPhaseControls(container, promptEl) {
+  const phase = session.phase;
+  const scenario = session.scenario;
+
+  if (phase === "evidence") {
+    promptEl.textContent = "Marca los controles que te parecen problemáticos.";
+    const noneOn = session.answers.noneSelected;
+    const canContinue = session.hasAnswerForCurrentPhase();
+    container.innerHTML = `
+      <button type="button" class="toggle-button" id="none-toggle" aria-pressed="${noneOn}">Ninguno: la serie está en control</button>
+      <button type="button" class="confirm-button" id="confirm-button" ${canContinue ? "" : "disabled"}>Continuar</button>
+    `;
+    container.querySelector("#none-toggle").addEventListener("click", () => {
+      session.setNoneSelected(!session.answers.noneSelected);
+      renderPractice();
+    });
+    container.querySelector("#confirm-button").addEventListener("click", () => {
+      if (session.advance()) renderPractice();
+    });
+    return;
+  }
+
+  if (phase === "rule") {
+    promptEl.textContent = "¿Qué regla respalda esa evidencia?";
+    const canContinue = session.hasAnswerForCurrentPhase();
+    container.innerHTML = `
+      <div class="option-row" role="group" aria-label="Opciones de regla">
+        ${ruleOptions()
+          .map(
+            (opt) =>
+              `<button type="button" class="option-button" data-rule="${opt.id}" aria-pressed="${session.answers.rule === opt.id}">${opt.label}</button>`
+          )
+          .join("")}
+      </div>
+      <p class="hint-text">Solo estas tres reglas se evalúan aquí.</p>
+      <button type="button" class="confirm-button" id="confirm-button" ${canContinue ? "" : "disabled"}>Continuar</button>
+    `;
+    container.querySelectorAll("[data-rule]").forEach((button) => {
+      button.addEventListener("click", () => {
+        session.chooseRule(button.dataset.rule);
+        renderPractice();
+      });
+    });
+    container.querySelector("#confirm-button").addEventListener("click", () => {
+      if (session.advance()) renderPractice();
+    });
+    return;
+  }
+
+  if (phase === "action") {
+    promptEl.textContent = "¿Qué debe hacer el laboratorio con esta sesión?";
+    const canContinue = session.hasAnswerForCurrentPhase();
+    const glosses = {
+      accept: "Liberar resultados.",
+      review: "No rechazar todavía; inspeccionar antes de liberar.",
+      reject: "No liberar; investigar y repetir.",
+    };
+    container.innerHTML = `
+      <div class="option-row option-row-action" role="group" aria-label="Opciones de acción">
+        ${actionOptions()
+          .map(
+            (opt) =>
+              `<button type="button" class="option-button action-option" data-action="${opt.id}" aria-pressed="${session.answers.action === opt.id}">
+                <span class="option-title">${opt.label}</span>
+                <span class="option-gloss">${glosses[opt.id]}</span>
+              </button>`
+          )
+          .join("")}
+      </div>
+      <button type="button" class="confirm-button" id="confirm-button" ${canContinue ? "" : "disabled"}>Ver resultado</button>
+    `;
+    container.querySelectorAll("[data-action]").forEach((button) => {
+      button.addEventListener("click", () => {
+        session.chooseAction(button.dataset.action);
+        renderPractice();
+      });
+    });
+    container.querySelector("#confirm-button").addEventListener("click", () => {
+      if (session.advance()) {
+        const grade = session.grade();
+        const progress = loadProgress();
+        markScenarioComplete(progress, scenario.id, grade);
+        saveProgress(progress);
+        renderPractice();
+      }
+    });
+    return;
+  }
+
+  if (phase === "reveal" || phase === "counterfactual") {
+    promptEl.textContent = "";
+    container.innerHTML = "";
+    return;
+  }
+}
+
+function renderRevealBlock(container, showReveal) {
+  const phase = session.phase;
+  if (phase !== "reveal" && phase !== "counterfactual") {
+    container.hidden = true;
+    container.innerHTML = "";
+    return;
+  }
+
+  if (!showReveal) {
+    container.hidden = true;
+    container.innerHTML = `<button type="button" class="confirm-button" id="show-reveal-button">Mostrar resultado</button>`;
+    container.hidden = false;
+    container.querySelector("#show-reveal-button").addEventListener("click", () => {
+      session.showReveal();
+      renderPractice();
+    });
+    return;
+  }
+
+  container.hidden = false;
+  const scenario = session.scenario;
+  const grade = session.grade();
+  const icon = { correcta: "✓", parcial: "~", incompleta: "~", incorrecta: "✗" };
+
+  if (phase === "reveal") {
+    const teaching = scenario.teaching;
+    const incompleteRuleNote = grade.rule === "incompleta"
+      ? `<p class="incomplete-note">1₂s también se cumple, pero la regla que decide es ${ruleDisplay(scenario.expected.rule)}.</p>`
+      : "";
+    container.innerHTML = `
+      <div class="verdict-block">
+        <p class="verdict-line"><span aria-hidden="true">${icon[grade.evidence]}</span> Evidencia: ${grade.evidence}</p>
+        <p class="verdict-line"><span aria-hidden="true">${icon[grade.rule]}</span> Regla: ${grade.rule}</p>
+        <p class="verdict-line"><span aria-hidden="true">${icon[grade.action]}</span> Acción: ${grade.action}</p>
+      </div>
+      ${incompleteRuleNote}
+      <h3>Qué pasó</h3>
+      <p>${teaching.pattern}</p>
+      <h3>Por qué</h3>
+      <p>${teaching.why}</p>
+      <h3>Qué haces</h3>
+      <p>${teaching.action_text}</p>
+      ${teaching.error_type ? `<h3>Tipo de error</h3><p>${teaching.error_type}</p>` : ""}
+      ${teaching.capability_note ? `<h3>Nota</h3><p>${teaching.capability_note}</p>` : ""}
+      <div class="reveal-controls">
+        <button type="button" class="outline-button" id="try-counterfactual-button">Probar un cambio</button>
+        <button type="button" class="primary-button" id="next-scenario-button">Siguiente escenario</button>
+        <button type="button" class="outline-button" id="hide-reveal-button">Volver a ocultar</button>
+      </div>
+    `;
+    container.querySelector("#try-counterfactual-button").addEventListener("click", () => {
+      session.counterfactualIndex = gridIndexForZ(
+        scenario,
+        scenario.points.find((p) => p.run === scenario.editable_run).z
+      );
+      session.phase = "counterfactual";
+      renderPractice();
+    });
+    container.querySelector("#next-scenario-button").addEventListener("click", () => goToNextScenario());
+    container.querySelector("#hide-reveal-button").addEventListener("click", () => {
+      session.hideReveal();
+      renderPractice();
+    });
+    return;
+  }
+
+  if (phase === "counterfactual") {
+    if (session.counterfactualIndex === null) {
+      session.counterfactualIndex = gridIndexForZ(
+        scenario,
+        scenario.points.find((p) => p.run === scenario.editable_run).z
+      );
+    }
+    const { index, result } = counterfactualAt(scenario, session.counterfactualIndex);
+    const boundarySentence = boundarySentenceForZ(result.z);
+    const sign = result.z >= 0 ? "+" : "";
+    const readout = `Control ${scenario.editable_run}: ${sign}${result.z.toFixed(1)} DE${
+      boundarySentence ? ` — ${boundarySentence}` : ""
+    }`;
+
+    const ruleStateRows = result.evaluation.rules
+      .map((r) => {
+        const state = r.triggered ? "Se cumple" : "No se cumple";
+        const runsText = r.evidence_runs.length ? ` (controles ${r.evidence_runs.join(", ")})` : "";
+        return `<li>${ruleDisplay(r.rule)}: ${state}${runsText}</li>`;
+      })
+      .join("");
+
+    container.innerHTML = `
+      <h3>Cambia el control ${scenario.editable_run} y observa qué reglas dejan de cumplirse.</h3>
+      <div class="counterfactual-controls">
+        <button type="button" class="step-button" id="cf-minus" aria-label="Disminuir un paso">−</button>
+        <input type="range" id="cf-range" min="0" max="40" step="1" value="${index}" aria-label="Valor del control ${scenario.editable_run} en desviaciones estándar" />
+        <button type="button" class="step-button" id="cf-plus" aria-label="Aumentar un paso">+</button>
+      </div>
+      <p class="cf-readout">${readout}</p>
+      <ul class="cf-rule-states">${ruleStateRows}</ul>
+      <p class="cf-consequence">${result.consequence}</p>
+      <div class="reveal-controls">
+        <button type="button" class="outline-button" id="back-to-result-button">Volver al resultado</button>
+        <button type="button" class="primary-button" id="next-scenario-button-cf">Siguiente escenario</button>
+      </div>
+    `;
+
+    const rangeInput = container.querySelector("#cf-range");
+    rangeInput.addEventListener("input", () => {
+      session.counterfactualIndex = Number(rangeInput.value);
+      renderPractice();
+    });
+    container.querySelector("#cf-minus").addEventListener("click", () => {
+      session.counterfactualIndex = Math.max(0, session.counterfactualIndex - 1);
+      renderPractice();
+    });
+    container.querySelector("#cf-plus").addEventListener("click", () => {
+      session.counterfactualIndex = Math.min(40, session.counterfactualIndex + 1);
+      renderPractice();
+    });
+    container.querySelector("#back-to-result-button").addEventListener("click", () => {
+      session.phase = "reveal";
+      renderPractice();
+    });
+    container.querySelector("#next-scenario-button-cf").addEventListener("click", () => goToNextScenario());
+  }
+}
+
+function renderSetSummary() {
+  const promptEl = document.querySelector("#practice-prompt");
+  const chartEl = document.querySelector("#practice-chart");
+  const runStripEl = document.querySelector("#run-strip");
+  const controlsEl = document.querySelector("#phase-controls");
+  const revealEl = document.querySelector("#reveal-block");
+  const progress = loadProgress();
+  const completed = practiceData.scenarios.filter((scenario) => progress.completed[scenario.id]);
+  const actionCorrect = completed.filter((scenario) => progress.completed[scenario.id].action === "correcta");
+  const handled = actionCorrect.map((scenario) => scenario.label);
+  const missed = completed
+    .filter((scenario) => progress.completed[scenario.id].action !== "correcta")
+    .map((scenario) => scenario.label);
+
+  updateSessionBar();
+  promptEl.textContent = "Set completo";
+  chartEl.innerHTML = "";
+  document.querySelector("#practice-status").textContent = "Set de práctica completado.";
+  runStripEl.hidden = true;
+  runStripEl.innerHTML = "";
+  controlsEl.innerHTML = "";
+  revealEl.hidden = false;
+  revealEl.innerHTML = `
+    <div class="verdict-block">
+      <p class="verdict-line">Acciones correctas: ${actionCorrect.length} / ${practiceData.scenarios.length}</p>
+    </div>
+    <p>${handled.length ? `Manejaste: ${handled.join("; ")}.` : "Aún no acertaste acciones en este set."}</p>
+    <p>${missed.length ? `Para revisar: ${missed.join("; ")}.` : "No quedó ninguna familia de escenarios por revisar."}</p>
+    <div class="reveal-controls">
+      <button type="button" class="primary-button" id="repeat-set-button">Repetir set</button>
+      <button type="button" class="outline-button" id="summary-home-button">Volver al inicio</button>
+    </div>
+  `;
+  revealEl.querySelector("#repeat-set-button").addEventListener("click", () => {
+    saveProgress({ completed: {}, currentScenarioId: practiceData.scenarios[0].id });
+    window.location.hash = `practice/${practiceData.scenarios[0].id}`;
+    enterPractice();
+  });
+  revealEl.querySelector("#summary-home-button").addEventListener("click", () => showRoute("home"));
+}
+
+function goToNextScenario() {
+  const scenarios = practiceData.scenarios;
+  const idx = scenarioIndex(session.scenario.id);
+  const next = scenarios[idx + 1];
+  if (next) {
+    window.location.hash = `practice/${next.id}`;
+    enterPractice();
+  } else {
+    session.phase = "summary";
+    renderPractice();
+  }
+}
+
+shareButton.addEventListener("click", async () => {
+  const url = window.location.href;
   try {
-    const response = await fetch("./data/cards.json");
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const payload = await response.json();
-    state.deck = [...payload.cards].sort((a, b) => a.sort_order - b.sort_order);
-    renderCurrentCard();
+    if (navigator.clipboard) await navigator.clipboard.writeText(url);
+  } catch {
+    // Clipboard may be unavailable; the URL remains visible in the address bar.
+  }
+});
+
+// --- Rules -------------------------------------------------------------
+
+async function ensureRulesData() {
+  if (!rulesData) {
+    rulesData = await fetchJSON("./data/rules.json");
+  }
+  return rulesData;
+}
+
+async function renderRulesView() {
+  const container = document.querySelector("#rules-list");
+  try {
+    const data = await ensureRulesData();
+    renderLearn(container, data);
   } catch (error) {
-    question.textContent = "No fue posible cargar las tarjetas.";
-    answer.textContent = "La referencia y el laboratorio visual siguen disponibles.";
-    cardTag.textContent = "Error de carga";
+    container.textContent = "No fue posible cargar las reglas.";
     console.error(error);
   }
 }
 
-function currentCard() {
-  return state.deck[state.cardIndex];
-}
+// --- init --------------------------------------------------------------
 
-function updateProgress() {
-  const total = state.deck.length;
-  const completed = Math.min(state.cardIndex, total);
-  const shown = state.finished ? total : Math.min(state.cardIndex + 1, total);
-  progressLabel.textContent = `${shown} / ${total}`;
-  progressBar.style.width = `${total ? (completed / total) * 100 : 0}%`;
-}
+initCards({ fetchJSON });
 
-function renderCurrentCard() {
-  if (!state.deck.length) return;
-
-  if (state.cardIndex >= state.deck.length) {
-    renderSummaryCard();
-    return;
-  }
-
-  state.finished = false;
-  state.revealed = false;
-  reviewCard.classList.remove("revealed");
-  ratingActions.hidden = true;
-  const card = currentCard();
-  cardTag.textContent = card.tags?.[0]?.replaceAll("-", " ") || "Tarjeta";
-  question.innerHTML = formatCardMarkup(card.front);
-  answer.innerHTML = formatCardMarkup(card.back);
-  document.querySelector('[data-rating="again"]').textContent = "No la supe";
-  document.querySelector('[data-rating="known"]').textContent = "La supe";
-  updateProgress();
-}
-
-function revealCard() {
-  if (state.finished || !currentCard()) return;
-  state.revealed = true;
-  reviewCard.classList.add("revealed");
-  ratingActions.hidden = false;
-}
-
-function rateCard(rating) {
-  if (state.finished) {
-    if (rating === "known") restartCards();
-    else showRoute("home");
-    return;
-  }
-  if (!state.revealed) return;
-  if (rating === "known") state.known += 1;
-  else state.again += 1;
-  state.cardIndex += 1;
-  renderCurrentCard();
-}
-
-function renderSummaryCard() {
-  state.finished = true;
-  state.revealed = false;
-  reviewCard.classList.remove("revealed");
-  cardTag.textContent = "Sesión completa";
-  question.innerHTML = `Terminaste ${state.deck.length} tarjetas.<br><span class="term">${state.known}</span> recuperadas · <span class="term">${state.again}</span> para reforzar.`;
-  answer.textContent = "";
-  ratingActions.hidden = false;
-  document.querySelector('[data-rating="again"]').textContent = "Volver al inicio";
-  document.querySelector('[data-rating="known"]').textContent = "Repasar de nuevo";
-  progressLabel.textContent = `${state.deck.length} / ${state.deck.length}`;
-  progressBar.style.width = "100%";
-}
-
-function restartCards() {
-  state.cardIndex = 0;
-  state.known = 0;
-  state.again = 0;
-  state.finished = false;
-  renderCurrentCard();
-}
-
-reviewCard.addEventListener("click", () => revealCard());
-reviewCard.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" || event.key === " ") {
-    event.preventDefault();
-    revealCard();
-  }
-});
-
-ratingActions.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-rating]");
-  if (button) rateCard(button.dataset.rating);
-});
-
-document.addEventListener("keydown", (event) => {
-  if (document.body.dataset.view !== "cards") return;
-  if (event.key === " " && !state.revealed && !state.finished) {
-    event.preventDefault();
-    revealCard();
-  } else if (event.key === "ArrowLeft" && (state.revealed || state.finished)) {
-    rateCard("again");
-  } else if (event.key === "ArrowRight" && (state.revealed || state.finished)) {
-    rateCard("known");
-  }
-});
-
-reviewCard.addEventListener("pointerdown", (event) => {
-  state.pointerStartX = event.clientX;
-});
-reviewCard.addEventListener("pointerup", (event) => {
-  if (state.pointerStartX === null || !state.revealed || state.finished) return;
-  const delta = event.clientX - state.pointerStartX;
-  state.pointerStartX = null;
-  if (Math.abs(delta) < 80) return;
-  rateCard(delta > 0 ? "known" : "again");
-});
-reviewCard.addEventListener("pointercancel", () => { state.pointerStartX = null; });
-
-renderRules();
-renderPractice();
 showRoute(routeFromHash(), { updateHash: false });

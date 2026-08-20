@@ -24,7 +24,7 @@ Routes reuse the existing hash router. New/changed screens marked ⭑.
 
 ### Decision set runner ⭑ — five internal states
 
-1. **present** — LJ chart only. Control limits visible; **no** trigger colors, **no** rule table, **no** educational text. Prompt: "¿Aceptas o rechazas esta corrida?"
+1. **present** — LJ chart only. Control limits visible; **no** trigger colors, **no** rule table, **no** educational text. Prompt: "¿Aceptas o rechazas esta sesión?"
 2. **predict** — controls active:
    - `Aceptar` / `Rechazar` (required).
    - If `Rechazar`: rule selector (`1_2s`, `1_3s`, `2_2s`, shown with plain-language labels) + "toca el primer punto que rompe la regla" on the chart.
