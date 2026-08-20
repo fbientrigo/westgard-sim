@@ -114,13 +114,15 @@ El workflow `.github/workflows/student-pages.yml`:
 
 Configura el proyecto Vercel con:
 
-- Root Directory: `apps/student-web`
-- Install Command: `npm install`
-- Build Command: `npm run build:vercel`
-- Output Directory: `dist`
+- Root Directory: repo root / empty value
+- Install Command: `python3 -m pip install -r requirements.txt && npm --prefix apps/student-web ci`
+- Build Command: `npm --prefix apps/student-web run build:vercel`
+- Output Directory: `apps/student-web/dist`
 
-El build de Vercel necesita Python disponible para ejecutar los scripts de export estatico. El
-build no requiere Supabase para compilar ni para servir contenido educativo.
+El repo incluye `vercel.json` con esos comandos. No configures Root Directory como
+`apps/student-web`: el build necesita Python, `requirements.txt`, `scripts/`, `content/` y
+`qc_lab_simulator/` desde la raiz. El build no requiere Supabase para compilar ni para servir
+contenido educativo.
 
 Variables opcionales de entorno:
 

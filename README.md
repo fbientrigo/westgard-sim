@@ -245,10 +245,14 @@ El frontend tambien puede desplegarse en Vercel sin mover contenido educativo a 
 
 Settings:
 
-- Root Directory: `apps/student-web`
-- Install Command: `npm install`
-- Build Command: `npm run build:vercel`
-- Output Directory: `dist`
+- Root Directory: repo root / empty value
+- Install Command: `python3 -m pip install -r requirements.txt && npm --prefix apps/student-web ci`
+- Build Command: `npm --prefix apps/student-web run build:vercel`
+- Output Directory: `apps/student-web/dist`
+
+El repo incluye `vercel.json` con esos comandos. No configures Root Directory como
+`apps/student-web`: el build necesita leer `requirements.txt`, `scripts/`, `content/` y
+`qc_lab_simulator/` desde la raiz.
 
 Variables opcionales:
 
@@ -258,6 +262,11 @@ Variables opcionales:
 Si faltan, la app funciona igual con datos estaticos y progreso en `localStorage`. Con esas variables,
 aparece login por magic link y el progreso de flashcards se sincroniza en Supabase. El SQL manual esta
 en `apps/student-web/supabase/001_identity_and_progress.sql`.
+
+Guia completa de implementacion, Vercel, Supabase y mejoras visuales con Claude:
+
+- `docs/IMPLEMENTATION_UPLOAD_GUIDE.md`
+- `PRE_MORTEM_GUIDE.md`
 
 ## 6. Guia para crear experimentos
 
