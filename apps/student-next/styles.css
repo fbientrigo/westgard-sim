@@ -331,8 +331,25 @@ h3 { font-size: 1.05rem; margin-bottom: 8px; }
 .card-group li { padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
 
 .review-shell { width: min(100%, 680px); margin: 28px auto 0; }
-.review-card { display: block; width: 100%; min-height: 430px; padding: 0; border: 0; background: transparent; perspective: 1200px; cursor: pointer; touch-action: pan-y; border-radius: 28px; text-align: left; }
+.review-card {
+  display: block;
+  width: 100%;
+  min-height: 430px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  perspective: 1200px;
+  cursor: pointer;
+  touch-action: pan-y;
+  border-radius: 28px;
+  text-align: left;
+  transform-style: preserve-3d;
+  transition: transform 180ms cubic-bezier(.2,.8,.2,1), opacity 160ms ease;
+  will-change: transform;
+}
 .review-card:disabled { cursor: default; }
+.review-card.dragging { transition: none; }
+.review-card.leaving { opacity: 0; }
 .review-card-inner { display: block; position: relative; width: 100%; min-height: 430px; transform-style: preserve-3d; transition: transform 360ms cubic-bezier(.2,.7,.2,1); border-radius: 28px; box-shadow: var(--shadow); }
 .review-card.revealed .review-card-inner { transform: rotateY(180deg); }
 .card-face { position: absolute; inset: 0; width: 100%; min-height: 430px; padding: clamp(28px, 6vw, 50px); border: 1px solid var(--line); border-radius: 28px; background: var(--surface); backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; }
