@@ -350,10 +350,14 @@ h3 { font-size: 1.05rem; margin-bottom: 8px; }
 .review-card:disabled { cursor: default; }
 .review-card.dragging { transition: none; }
 .review-card.leaving { opacity: 0; }
-.review-card-inner { display: block; position: relative; width: 100%; min-height: 430px; transform-style: preserve-3d; transition: transform 360ms cubic-bezier(.2,.7,.2,1); border-radius: 28px; box-shadow: var(--shadow); }
+.review-card-inner { display: block; position: relative; width: 100%; min-height: 430px; transform-style: preserve-3d; transition: transform 360ms cubic-bezier(.2,.7,.2,1), box-shadow 120ms ease; border-radius: 28px; box-shadow: var(--shadow); }
 .review-card.revealed .review-card-inner { transform: rotateY(180deg); }
-.card-face { position: absolute; inset: 0; width: 100%; min-height: 430px; padding: clamp(28px, 6vw, 50px); border: 1px solid var(--line); border-radius: 28px; background: var(--surface); backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; }
+.card-face { position: absolute; inset: 0; width: 100%; min-height: 430px; padding: clamp(28px, 6vw, 50px); border: 1px solid var(--line); border-radius: 28px; background: var(--surface); backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease; }
 .card-back { transform: rotateY(180deg); background: var(--text); color: white; border-color: var(--text); }
+.review-card.swipe-known .card-back { background: var(--brand); border-color: var(--brand); }
+.review-card.swipe-again .card-back { background: var(--danger); border-color: var(--danger); }
+.review-card.swipe-known .review-card-inner { box-shadow: 0 22px 52px rgba(49, 87, 213, 0.30); }
+.review-card.swipe-again .review-card-inner { box-shadow: 0 22px 52px rgba(178, 58, 58, 0.30); }
 .card-back .card-kicker { color: #aab8ff; }
 .card-content { margin: auto 0; min-width: 0; overflow-wrap: normal; word-break: normal; font-size: clamp(1.35rem, 3vw, 2.15rem); line-height: 1.35; font-weight: 680; letter-spacing: -0.025em; }
 .card-content .term,

@@ -136,7 +136,7 @@ export function restoreSession(saved, allowedCardIds) {
 
 function resetCardMotion() {
   const card = cacheElements().card;
-  card.classList.remove("dragging", "leaving");
+  card.classList.remove("dragging", "leaving", "swipe-known", "swipe-again");
   card.style.transform = "";
 }
 
@@ -147,6 +147,13 @@ function setCardDragMotion(dx, dy) {
   const tiltY = Math.max(-9, Math.min(9, dx / 24));
   const rotationZ = Math.max(-9, Math.min(9, dx / 28));
   card.style.transform = `perspective(1200px) translate3d(${dx}px, ${limitedY}px, 0) rotateX(${tiltX}deg) rotateY(${tiltY}deg) rotateZ(${rotationZ}deg)`;
+}
+
+function setCardSwipeFeedback(dx) {
+  const card = cacheElements().card;
+  const canRate = state.revealed && !isFinished();
+  card.classList.toggle("swipe-known", canRate && dx >= SWIPE_THRESHOLD);
+  card.classList.toggle("swipe-again", canRate && dx <= -SWIPE_THRESHOLD);
 }
 
 function setCardHoverMotion(event) {
@@ -162,6 +169,8 @@ function animateSwipeRating(rating) {
   const card = cacheElements().card;
   const direction = rating === "known" ? 1 : -1;
   card.classList.remove("dragging");
+  card.classList.toggle("swipe-known", rating === "known");
+  card.classList.toggle("swipe-again", rating === "again");
   card.classList.add("leaving");
   card.style.transform = `perspective(1200px) translate3d(${direction * 440}px, -12px, 0) rotateZ(${direction * 10}deg)`;
 
@@ -203,6 +212,7 @@ export function initCards({ fetchJSON }) {
       const dy = event.clientY - state.pointerStartY;
       state.pointerMoved ||= Math.hypot(dx, dy) > 7;
       setCardDragMotion(dx, dy);
+      setCardSwipeFeedback(dx);
       return;
     }
     setCardHoverMotion(event);
